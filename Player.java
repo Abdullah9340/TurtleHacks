@@ -122,7 +122,6 @@ public class Player implements KeyListener {
   }
 
   public void renderHotbar(Graphics g) {
-<<<<<<< HEAD
     g.setColor(Color.darkGray);
     for (int i = 0; i < inventoryLimit; i++) {
       drawThickRect(g, i * 64, 0, 64, 64, 3);
@@ -130,22 +129,10 @@ public class Player implements KeyListener {
     for (int i = 0; i < inventory.size(); i++) {
       g.drawImage(inventory.get(i).getIcon(), i * 64, 0, 64, 64, null, null);
     }
-
-    // g.drawString("x"+hotbar.get("bottle"), 64, 64);
-    // g.drawImage(GarbageAssets.battery, 64, 0, 64, 64, null, null);
-    // g.drawString("x"+hotbar.get("battery"), 128, 32);
   }
 
   public void pushGarbage(GarbageObject garbage){
     inventory.add(garbage);
-=======
-    g.setColor(Color.black);
-    g.setFont(new Font("Old English Text MT", Font.PLAIN, 30));
-    g.drawImage(GarbageAssets.bottle, 0, 0, 64, 64, null, null);
-    g.drawString("x" + hotbar.get("bottle"), 64, 32);
-    g.drawImage(GarbageAssets.battery, 64, 0, 64, 64, null, null);
-    g.drawString("x" + hotbar.get("battery"), 128, 32);
->>>>>>> master
   }
 
   public void updateAfterCollide() {
