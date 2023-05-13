@@ -9,6 +9,8 @@ public class Assets {
   public static BufferedImage sandTile;
 
   public static BufferedImage menuScreen, gameover, gamewon;
+
+  public static BufferedImage[] endingScreen;
   /*-
    * Method: init() 
    * Description: Set up all image assets
@@ -28,7 +30,9 @@ public class Assets {
     menuScreen = ImageLoader.loadImage("Assets/mainmenu.png");
     // gameover = ImageLoader.loadImage("Assets/Gameover.png");
     // gamewon = ImageLoader.loadImage("Assets/gamewon.png");
-
+    endingScreen = new BufferedImage[] { ImageLoader.loadImage("Assets/30.png"), ImageLoader.loadImage("Assets/50.png"),
+        ImageLoader.loadImage("Assets/70.png"), ImageLoader.loadImage("Assets/90.png"),
+        ImageLoader.loadImage("Assets/100.png") };
     // Load Background
     BackgroundAssets.init(background);
     // Load player sprites

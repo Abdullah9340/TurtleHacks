@@ -11,6 +11,7 @@ public class GameManagement implements KeyListener {
   // Level Information
   private ArrayList<ArrayList<BufferedImage[][]>> levelTileMaps;
   private int currentLevel = 0;
+  private int garbageWavesLeft = 1;
 
   private Player player;
 
@@ -25,6 +26,10 @@ public class GameManagement implements KeyListener {
   // Player Rolling Logic
   boolean isRolling = false;
   int rollingFrame = 0;
+
+  // Game Won logic
+  boolean isGameWon = false;
+  int gameWonFrame = 0, other = 0;
 
   // Are we in the main menu
   boolean isMenuState = true;
@@ -87,12 +92,19 @@ public class GameManagement implements KeyListener {
   public void render(Graphics g) {
     // Draw the level tile map
 
+    if (gameWonFrame == Assets.endingScreen.length) {
+      g.drawImage(Assets.endingScreen[gameWonFrame - 1], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
+      return;
+    }
+
     if (isMenuState) {
       g.drawImage(Assets.menuScreen, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
       return;
     }
+
     g.setColor(Color.red);
-    for (BufferedImage[][] layer : levelTileMaps.get(currentLevel)) {
+    for (BufferedImage[][] layer : levelTileMaps
+        .get(currentLevel == levelTileMaps.size() ? currentLevel - 1 : currentLevel)) {
       for (int i = 0; i < TurtleHacks.HEIGHT / 64; i++) {
         for (int j = 0; j < TurtleHacks.WIDTH / 64; j++) {
           g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
@@ -113,15 +125,32 @@ public class GameManagement implements KeyListener {
         isGrabbing = false;
         grabFrame = 0;
       }
-    } else if (isRolling) {
+    } else if (isRolling && currentLevel != levelTileMaps.size()) {
       player.renderRoll(g, rollingFrame);
       rollingFrame++;
       if (rollingFrame == PlayerAssets.rollAnimations.size()) {
         isRolling = false;
         rollingFrame = 0;
+        if (garbageWavesLeft != 0) {
+          generateGarbage();
+        } else {
+          currentLevel++;
+          if (currentLevel == levelTileMaps.size()) {
+            isGameWon = true;
+          }
+        }
       }
     } else {
       player.render(g);
+    }
+
+    if (isGameWon) {
+      g.drawImage(Assets.endingScreen[gameWonFrame], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
+      other++;
+      if (other == 10) {
+        other = 0;
+        gameWonFrame++;
+      }
     }
 
   }
@@ -129,7 +158,7 @@ public class GameManagement implements KeyListener {
   public void update() {
     if (isMenuState)
       return;
-    if (isGrabbing || isRolling)
+    if (isGrabbing || isRolling || isGameWon)
       return;
     player.update();
     checkCollisions();
@@ -149,6 +178,9 @@ public class GameManagement implements KeyListener {
       player.updateAfterCollide();
     }
 
+    if (currentLevel == levelTileMaps.size()) {
+      return;
+    }
     // Player collision with map objects
     if (!allowedObjects
         .contains(
@@ -187,6 +219,7 @@ public class GameManagement implements KeyListener {
       if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()) {
         trashList.remove(obj);
         if (trashList.size() == 0) {
+          garbageWavesLeft -= 1;
           isRolling = true;
         }
         player.incrementGarbage(obj.getGarbageType());
