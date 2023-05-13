@@ -47,6 +47,7 @@ public class Game implements Runnable, KeyListener {
   // private variable to hold list of garbage objects
 
   public void init() {
+    Music.backgroundMusic();
     display = new Display(title, WIDTH, HEIGHT); // Set up display
     Assets.init();
 
