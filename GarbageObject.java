@@ -52,4 +52,8 @@ public class GarbageObject {
     public BufferedImage getIcon() {
         return trashIcon;
     }
+    
+    public String getGarbageType() {
+      return garbageType;
+    }
 }

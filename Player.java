@@ -1,7 +1,10 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public class Player implements KeyListener {
 
@@ -21,11 +24,14 @@ public class Player implements KeyListener {
   char nextDirection = direction;
 
   // Hotbar variables
-  int[] hotbar = {0, 0};
-
+  private HashMap<String, Integer> hotbar;
+  
   public Player(double x, double y) {
+    hotbar = new HashMap<>();
     this.x = x;
     this.y = y;
+    this.hotbar.put("bottle", 0);
+    this.hotbar.put("battery", 0);
   }
 
   public void updateDirectionMovements() {
@@ -81,7 +87,7 @@ public class Player implements KeyListener {
           null,
           null);
     }
-
+    renderHotbar(g);
   }
 
   public void renderGrab(Graphics g, int grabIndex) {
@@ -101,6 +107,16 @@ public class Player implements KeyListener {
           null,
           null);
     }
+    renderHotbar(g);
+  }
+
+  public void renderHotbar(Graphics g) {
+    g.setColor(Color.black);
+    g.setFont(new Font("Old English Text MT", Font.PLAIN, 30));
+    g.drawImage(GarbageAssets.bottle, 0, 0, 64, 64, null, null);
+    g.drawString("x"+hotbar.get("bottle"), 64, 32);
+    g.drawImage(GarbageAssets.battery, 64, 0, 64, 64, null, null);
+    g.drawString("x"+hotbar.get("battery"), 128, 32);
   }
 
   public void updateAfterCollide() {
@@ -198,6 +214,11 @@ public class Player implements KeyListener {
 
   public void setVelocityY(double velocity) {
     this.velocityY = velocity;
+  }
+
+  public void incrementGarbage(String garbageType) {
+    this.hotbar.put(garbageType, hotbar.get(garbageType)+1);
+    System.out.println(hotbar.get(garbageType));
   }
 
 }

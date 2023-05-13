@@ -67,7 +67,7 @@ public class GameManagement implements KeyListener {
       for (int i = 0; i < TurtleHacks.HEIGHT / 64; i++) {
         for (int j = 0; j < TurtleHacks.WIDTH / 64; j++) {
           g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
-          g.drawRect(j * 64, i * 64, 64, 64);
+          // g.drawRect(j * 64, i * 64, 64, 64);
         }
       }
     }
@@ -136,6 +136,7 @@ public class GameManagement implements KeyListener {
     for (GarbageObject obj : trashList) {
       if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()){
         trashList.remove(obj);
+        player.incrementGarbage(obj.getGarbageType());
         break;
       }
     }
