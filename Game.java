@@ -28,6 +28,8 @@ public class Game implements Runnable, KeyListener {
 
   private Thread thread;
 
+  private ArrayList<GarbageObject> trashList;
+
   /*-
   * Game() 
   * Description: This calls the title, sets the width and height Also
@@ -43,12 +45,20 @@ public class Game implements Runnable, KeyListener {
   }
 
   // private variable to hold list of garbage objects
-  //
 
   public void init() {
+    GarbageObject.init();
+
+    trashList = new ArrayList<GarbageObject>();
 
     display = new Display(title, WIDTH, HEIGHT); // Set up display
     Assets.init();
+
+    for (int i = 0; i < 10; i++) {
+      GarbageObject garbage = new GarbageObject();
+
+      trashList.add(garbage);
+    }
 
     // generate 10 garbage objects
 
@@ -79,6 +89,10 @@ public class Game implements Runnable, KeyListener {
           g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
         }
       }
+    }
+
+    for (GarbageObject garbageImage : trashList) {
+      garbageImage.render(g);
     }
 
     // End Draw

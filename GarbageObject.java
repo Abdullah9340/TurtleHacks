@@ -26,19 +26,19 @@ public class GarbageObject {
         int x_bound = TurtleHacks.WIDTH / 64;
         int y_bound = TurtleHacks.HEIGHT / 64;
 
-        x_pos = rand.nextInt(x_bound);
-        y_pos = rand.nextInt(y_bound);
+        x_pos = rand.nextInt(x_bound) * 64;
+        y_pos = rand.nextInt(y_bound) * 64;
 
         garbageType = typeMap.get(typeInt);
 
         trashIcon = iconMap.get(garbageType);
 
         // randomly set x,y positions, set garbage type, once have garbage type set the
-        // image
+
     }
 
     public void render(Graphics g) {
-        g.drawImage(trashIcon, x_pos, y_pos, 64, 64, null, null);
+        g.drawImage(trashIcon, x_pos + 16, y_pos + 16, 32, 32, null, null);
     }
 
     public int getX() {
@@ -47,5 +47,9 @@ public class GarbageObject {
 
     public int getY() {
         return y_pos;
+    }
+
+    public BufferedImage getIcon() {
+        return trashIcon;
     }
 }
