@@ -28,7 +28,6 @@ public class Player implements KeyListener {
   private HashMap<String, Integer> hotbar;
   private int inventoryLimit = 1;
   private ArrayList<GarbageObject> inventory;
-  
 
   public Player(double x, double y) {
     this.hotbar = new HashMap<>();
@@ -131,7 +130,7 @@ public class Player implements KeyListener {
     }
   }
 
-  public void pushGarbage(GarbageObject garbage){
+  public void pushGarbage(GarbageObject garbage) {
     inventory.add(garbage);
   }
 
@@ -146,7 +145,7 @@ public class Player implements KeyListener {
     currPlayerWalk = 0;
   }
 
-  public boolean isInventoryFull(){
+  public boolean isInventoryFull() {
     return inventory.size() == inventoryLimit;
   }
 
@@ -236,17 +235,15 @@ public class Player implements KeyListener {
     this.velocityY = velocity;
   }
 
-<<<<<<< HEAD
   public void drawThickRect(Graphics g, int x, int y, int width,
-            int height, int thickness) {
-        for (int i = 0; i < thickness; i++)
-            g.drawRect(x + i, y + i, width - 2 * i, height - 2 * i);
-    }
-=======
+      int height, int thickness) {
+    for (int i = 0; i < thickness; i++)
+      g.drawRect(x + i, y + i, width - 2 * i, height - 2 * i);
+  }
+
   public void incrementGarbage(String garbageType) {
     this.hotbar.put(garbageType, hotbar.get(garbageType) + 1);
     System.out.println(hotbar.get(garbageType));
   }
->>>>>>> master
 
 }
