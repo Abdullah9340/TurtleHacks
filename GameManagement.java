@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -18,6 +19,11 @@ public class GameManagement implements KeyListener {
   private ArrayList<GarbageObject> trashList;
 
   private HashSet<BufferedImage> allowedObjects;
+
+  private GarbageBins trashBin, recycleBin;
+
+  private int total_points = 0;
+  private int round_number = 1;
 
   // Player Grabbing Logic
   boolean isGrabbing = false;
@@ -42,6 +48,9 @@ public class GameManagement implements KeyListener {
     GarbageObject.init();
     trashList = new ArrayList<GarbageObject>();
     allowedObjects = new HashSet<>();
+
+    trashBin = new GarbageBins("trash");
+    recycleBin = new GarbageBins("recycling");
 
     allowedObjects.add(BackgroundAssets.sandTileBasic);
     allowedObjects.add(BackgroundAssets.transparentTile);
@@ -113,9 +122,20 @@ public class GameManagement implements KeyListener {
       }
     }
 
+    g.setColor(Color.black);
+    g.setFont(new Font("Serif", Font.BOLD, 25));
+    g.drawString("Round: " + round_number, 16*64 - 48, 0*64 + 32);
+
+    g.setColor(Color.black);
+    g.setFont(new Font("Serif", Font.BOLD, 25));
+    g.drawString("Points: " + total_points, 16*64 - 48, 1*64 + 16);
+
     for (GarbageObject obj : trashList) {
       obj.render(g);
     }
+
+    trashBin.render(g);
+    recycleBin.render(g);
 
     if (isGrabbing) {
       player.renderGrab(g, grabFrame);
@@ -177,6 +197,16 @@ public class GameManagement implements KeyListener {
         || player.getY() >= TurtleHacks.HEIGHT / 64) {
       player.updateAfterCollide();
     }
+
+    // Player collision with trash bin and recycling bin
+    if (trashBin.get_X() == (int) player.getX() && trashBin.get_Y() == (int) player.getY()) {
+      player.updateAfterCollide();
+    }
+
+    if (recycleBin.get_X() == (int) player.getX() && recycleBin.get_Y() == (int) player.getY()) {
+      player.updateAfterCollide();
+    }
+
 
     if (currentLevel == levelTileMaps.size()) {
       return;
