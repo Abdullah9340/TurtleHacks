@@ -4,6 +4,6 @@ public class TurtleHacks {
 
   public static void main(String[] args) {
     // Start game
-    new Game("Save The Envrioment!", WIDTH, HEIGHT);
+    new Game("Save The Environment!", WIDTH, HEIGHT);
   }
 }
