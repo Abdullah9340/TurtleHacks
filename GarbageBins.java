@@ -21,7 +21,7 @@ public class GarbageBins {
     }
 
     public void render(Graphics g) {
-        g.drawImage(binIcon, x_pos * 64 + 16, y_pos * 64 + 16, 64, 64, null, null);
+        g.drawImage(binIcon, x_pos * 64 + 8, y_pos * 64, 64, 64, null, null);
     }
 
     public int get_X() {
