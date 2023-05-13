@@ -78,8 +78,28 @@ public class Player implements KeyListener {
 
   }
 
+  public void renderGrab(Graphics g, int grabIndex) {
+    int nextX = (int) (x * 64), nextY = (int) (y * 64);
+    if (getDirection() == 'w') {
+      g.drawImage(PlayerAssets.pickUpUpAnimations.get(grabIndex), nextX, nextY, 64, 64, null,
+          null);
+    } else if (getDirection() == 'a') {
+      g.drawImage(PlayerAssets.pickUpLeftAnimations.get(grabIndex), nextX, nextY, 64, 64, null,
+          null);
+    } else if (getDirection() == 'd') {
+      g.drawImage(PlayerAssets.pickUpRightAnimations.get(grabIndex), nextX, nextY, 64, 64,
+          null,
+          null);
+    } else if (getDirection() == 's') {
+      g.drawImage(PlayerAssets.pickUpDownAnimations.get(grabIndex), nextX, nextY, 64, 64,
+          null,
+          null);
+    }
+  }
+
   public void grab(Graphics g, BufferedImage[] backgroundTile) {
-    if (!stopped) return;
+    if (!stopped)
+      return;
 
     int FPS = 15;
     double timePerTick = 1000000000 / FPS;
@@ -87,13 +107,13 @@ public class Player implements KeyListener {
     long lastTime = System.nanoTime();
     int currentFrame = 0;
 
-    while (currentFrame < pickupSize){
+    while (currentFrame < pickupSize) {
       long now = System.nanoTime();
       delta += (now - lastTime) / timePerTick;
       lastTime = now;
 
       if (delta >= 1) {
-        for (BufferedImage background : backgroundTile){
+        for (BufferedImage background : backgroundTile) {
           g.drawImage(background, (int) (x * 64), (int) (y * 64), 64, 64, null, null);
         }
         int nextX = (int) (x * 64);
@@ -117,49 +137,60 @@ public class Player implements KeyListener {
       }
     }
 
-
-
-
   }
 
   @Override
   public void keyTyped(KeyEvent e) {
-    throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
+
   }
 
   @Override
   public void keyPressed(KeyEvent e) {
-    stopped = false;
     if (e.getKeyChar() == 'w' || e.getKeyChar() == 'W' || e.getKeyCode() == 38) {
       nextDirection = 'w';
-
+      stopped = false;
     }
     // Movement direction (back)
     // set to the letter s or down arrow on the keyboard
     if (e.getKeyChar() == 's' || e.getKeyChar() == 'S' || e.getKeyCode() == 40) {
       nextDirection = 's';
-
+      stopped = false;
     }
     // Movement direction (left)
     // set to the letter a or left arrow on the keyboard
     if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A' || e.getKeyCode() == 37) {
       nextDirection = 'a';
-
+      stopped = false;
     }
     // Movement direction (right)
     // set to the letter d or right arrow on the keyboard
     if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D' || e.getKeyCode() == 39) {
       nextDirection = 'd';
-    } 
-
-    if (e.getKeyCode() == 13){
-      // grab(g, BackgroundAssets.sandTile)
+      stopped = false;
     }
+
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
-    stopped = true;
+    if (e.getKeyChar() == 'w' || e.getKeyChar() == 'W' || e.getKeyCode() == 38) {
+      stopped = true;
+    }
+    // Movement direction (back)
+    // set to the letter s or down arrow on the keyboard
+    if (e.getKeyChar() == 's' || e.getKeyChar() == 'S' || e.getKeyCode() == 40) {
+      stopped = true;
+    }
+    // Movement direction (left)
+    // set to the letter a or left arrow on the keyboard
+    if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A' || e.getKeyCode() == 37) {
+      stopped = true;
+    }
+    // Movement direction (right)
+    // set to the letter d or right arrow on the keyboard
+    if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D' || e.getKeyCode() == 39) {
+      stopped = true;
+    }
   }
 
   public double getX() {

@@ -25,7 +25,7 @@ public class Assets {
     // SpriteSheet(ImageLoader.loadImage("Assets/darksoilder.png"));
 
     // Load Images
-    // menuScreen = ImageLoader.loadImage("Assets/mainmenu.png");
+    menuScreen = ImageLoader.loadImage("Assets/mainmenu.png");
     // gameover = ImageLoader.loadImage("Assets/Gameover.png");
     // gamewon = ImageLoader.loadImage("Assets/gamewon.png");
 
