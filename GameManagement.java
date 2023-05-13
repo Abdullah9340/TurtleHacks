@@ -11,7 +11,7 @@ public class GameManagement implements KeyListener {
   // Level Information
   private ArrayList<ArrayList<BufferedImage[][]>> levelTileMaps;
   private int currentLevel = 0;
-  private int garbageWavesLeft = 1;
+  private int garbageWavesLeft = 3;
 
   private Player player;
 
@@ -60,7 +60,7 @@ public class GameManagement implements KeyListener {
   }
 
   public void generateGarbage() {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 10; i++) {
       GarbageObject garbage = new GarbageObject();
       while (!garbageValid(garbage)) {
         garbage = new GarbageObject();
@@ -216,8 +216,9 @@ public class GameManagement implements KeyListener {
     }
 
     for (GarbageObject obj : trashList) {
-      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()){
-        if (player.isInventoryFull()) break;
+      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()) {
+        if (player.isInventoryFull())
+          break;
         trashList.remove(obj);
         player.pushGarbage(obj);
         if (trashList.size() == 0) {
