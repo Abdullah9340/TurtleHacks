@@ -64,6 +64,13 @@ public class Game implements Runnable, KeyListener {
     g = bs.getDrawGraphics();
     g.clearRect(0, 0, WIDTH, HEIGHT); // Clear the background
     g.setColor(Color.BLACK);
+    for (BufferedImage[][] layer : BackgroundAssets.firstLevelLayers) {
+      for (int i = 0; i < TurtleHacks.HEIGHT / 64; i++) {
+        for (int j = 0; j < TurtleHacks.WIDTH / 64; j++) {
+          g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
+        }
+      }
+    }
     g.drawImage(PlayerAssets.upAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 0, 0, 64, 64, null,
         null);
     g.drawImage(PlayerAssets.leftAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 64, 0, 64, 64, null,
