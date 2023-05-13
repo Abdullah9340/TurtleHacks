@@ -26,8 +26,8 @@ public class GarbageObject {
         int x_bound = TurtleHacks.WIDTH / 64;
         int y_bound = TurtleHacks.HEIGHT / 64;
 
-        x_pos = rand.nextInt(x_bound) * 64;
-        y_pos = rand.nextInt(y_bound) * 64;
+        x_pos = rand.nextInt(x_bound);
+        y_pos = rand.nextInt(y_bound);
 
         garbageType = typeMap.get(typeInt);
 
@@ -38,7 +38,7 @@ public class GarbageObject {
     }
 
     public void render(Graphics g) {
-        g.drawImage(trashIcon, x_pos + 16, y_pos + 16, 32, 32, null, null);
+        g.drawImage(trashIcon, x_pos * 64 + 16, y_pos * 64 + 16, 32, 32, null, null);
     }
 
     public int getX() {

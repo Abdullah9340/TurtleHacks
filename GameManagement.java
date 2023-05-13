@@ -1,8 +1,10 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class GameManagement implements KeyListener {
 
@@ -13,6 +15,8 @@ public class GameManagement implements KeyListener {
   private Player player;
 
   private ArrayList<GarbageObject> trashList;
+
+  private HashSet<BufferedImage> allowedObjects;
 
   // Player Grabbing Logic
   boolean isGrabbing = false;
@@ -28,6 +32,17 @@ public class GameManagement implements KeyListener {
 
     GarbageObject.init();
     trashList = new ArrayList<GarbageObject>();
+    allowedObjects = new HashSet<>();
+
+    allowedObjects.add(BackgroundAssets.sandTileBasic);
+    allowedObjects.add(BackgroundAssets.transparentTile);
+    allowedObjects.add(BackgroundAssets.sandTileGrass);
+    allowedObjects.add(BackgroundAssets.sandTileShadowBottom1);
+    allowedObjects.add(BackgroundAssets.sandTileShadowBottom2);
+    allowedObjects.add(BackgroundAssets.sandTileShadowBottom3);
+    allowedObjects.add(BackgroundAssets.shoreTileHoriz);
+    allowedObjects.add(BackgroundAssets.shoreTileCurveTop);
+    allowedObjects.add(BackgroundAssets.shoreTileCurveBottom);
 
     generateGarbage();
   }
@@ -35,7 +50,7 @@ public class GameManagement implements KeyListener {
   public void generateGarbage() {
     for (int i = 0; i < 10; i++) {
       GarbageObject garbage = new GarbageObject();
-
+      System.out.println(garbage.getX() + " " + garbage.getY());
       trashList.add(garbage);
     }
   }
@@ -47,11 +62,12 @@ public class GameManagement implements KeyListener {
       g.drawImage(Assets.menuScreen, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
       return;
     }
-
+    g.setColor(Color.red);
     for (BufferedImage[][] layer : levelTileMaps.get(currentLevel)) {
       for (int i = 0; i < TurtleHacks.HEIGHT / 64; i++) {
         for (int j = 0; j < TurtleHacks.WIDTH / 64; j++) {
           g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
+          g.drawRect(j * 64, i * 64, 64, 64);
         }
       }
     }
@@ -80,11 +96,17 @@ public class GameManagement implements KeyListener {
     if (isGrabbing)
       return;
     player.update();
+    checkCollisions();
 
   }
 
   public void checkCollisions() {
-    
+    // Player Collision With Trash
+    for (GarbageObject obj : trashList) {
+      if (obj.getX() == (int) player.getX() && obj.getY() == (int) player.getY()) {
+        player.updateAfterCollide();
+      }
+    }
   }
 
   public void checkForGarbage() {
