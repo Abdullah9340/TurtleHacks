@@ -33,6 +33,8 @@ public class Game implements Runnable, KeyListener {
 
   private Thread thread;
 
+  private ArrayList<GarbageObject> trashList;
+
   /*-
   * Game() 
   * Description: This calls the title, sets the width and height Also
@@ -47,9 +49,24 @@ public class Game implements Runnable, KeyListener {
     this.start(); // Start the thread/game
   }
 
+  // private variable to hold list of garbage objects
+
   public void init() {
+    GarbageObject.init();
+
+    trashList = new ArrayList<GarbageObject>();
+
     display = new Display(title, WIDTH, HEIGHT); // Set up display
     Assets.init();
+
+    for (int i = 0; i < 10; i++) {
+      GarbageObject garbage = new GarbageObject();
+
+      trashList.add(garbage);
+    }
+
+    // generate 10 garbage objects
+
     player = new Player(5, 5);
     manager = new GameManagement(player);
     display.getJFrame().addKeyListener(player); // Set up keylisteners
@@ -67,6 +84,8 @@ public class Game implements Runnable, KeyListener {
   }
 
   public void render() {
+    // loop over each garbage object and call its render func
+
     bs = display.getCanvas().getBufferStrategy();
     if (bs == null) { // Create a buffer strategy
       display.getCanvas().createBufferStrategy(3);
