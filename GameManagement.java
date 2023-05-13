@@ -53,9 +53,31 @@ public class GameManagement implements KeyListener {
   public void generateGarbage() {
     for (int i = 0; i < 10; i++) {
       GarbageObject garbage = new GarbageObject();
-      System.out.println(garbage.getX() + " " + garbage.getY());
+      while (!garbageValid(garbage)) {
+        garbage = new GarbageObject();
+      }
       trashList.add(garbage);
     }
+  }
+
+  public boolean garbageValid(GarbageObject garbage) {
+    if (garbage.getX() == (int) player.getX() && garbage.getY() == (int) player.getY()) {
+      return false;
+    }
+    for (GarbageObject obj : trashList) {
+      if (obj.getX() == garbage.getX() && obj.getY() == garbage.getY()) {
+        return false;
+      }
+    }
+
+    if (!allowedObjects
+        .contains(
+            levelTileMaps.get(currentLevel)
+                .get(levelTileMaps.get(currentLevel).size() - 1)[garbage.getY()][garbage.getX()])) {
+      return false;
+    }
+
+    return true;
   }
 
   public void render(Graphics g) {
@@ -149,9 +171,9 @@ public class GameManagement implements KeyListener {
       xDir = -1;
       yDir = 0;
     }
-    
+
     for (GarbageObject obj : trashList) {
-      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()){
+      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()) {
         trashList.remove(obj);
         player.incrementGarbage(obj.getGarbageType());
         break;
