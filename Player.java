@@ -132,10 +132,6 @@ public class Player implements KeyListener {
     }
   }
 
-  public void pushGarbage(GarbageObject garbage) {
-    inventory.add(garbage);
-  }
-
   public void updateAfterCollide() {
     x -= velocityX;
     y -= velocityY;
@@ -145,10 +141,6 @@ public class Player implements KeyListener {
 
     stopped = true;
     currPlayerWalk = 0;
-  }
-
-  public boolean isInventoryFull() {
-    return inventory.size() == inventoryLimit;
   }
 
   @Override
@@ -237,15 +229,27 @@ public class Player implements KeyListener {
     this.velocityY = velocity;
   }
 
+  public void pushGarbage(GarbageObject garbage) {
+    inventory.add(garbage);
+  }
+
+  public GarbageObject removeGarbage() {
+    if (inventory.size() == 0) return null;
+    return inventory.remove(0);
+  }
+
+  public ArrayList<GarbageObject> getInventory() {
+    return inventory;
+  }
+
+  public boolean isInventoryFull() {
+    return inventory.size() == inventoryLimit;
+  }
+
   public void drawThickRect(Graphics g, int x, int y, int width,
       int height, int thickness) {
     for (int i = 0; i < thickness; i++)
       g.drawRect(x + i, y + i, width - 2 * i, height - 2 * i);
-  }
-
-  public void incrementGarbage(String garbageType) {
-    this.hotbar.put(garbageType, hotbar.get(garbageType) + 1);
-    System.out.println(hotbar.get(garbageType));
   }
 
 }
