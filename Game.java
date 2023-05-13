@@ -71,38 +71,7 @@ public class Game implements Runnable, KeyListener {
         }
       }
     }
-    g.drawImage(PlayerAssets.upAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 0, 0, 64, 64, null,
-        null);
-    g.drawImage(PlayerAssets.leftAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 64, 0, 64, 64, null,
-        null);
-    g.drawImage(PlayerAssets.rightAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 64 * 2, 0, 64, 64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.downAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 64 * 3, 0, 64, 64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.pickUpUpAnimations.get(currPlayerPickup % PlayerAssets.pickUpDownAnimations.size()), 0, 64,
-        64, 64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.pickUpDownAnimations.get(currPlayerPickup % PlayerAssets.pickUpLeftAnimations.size()), 64,
-        64, 64, 64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.pickUpLeftAnimations.get(currPlayerPickup % PlayerAssets.pickUpRightAnimations.size()),
-        64 * 2, 64, 64,
-        64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.pickUpRightAnimations.get(currPlayerPickup % PlayerAssets.pickUpDownAnimations.size()),
-        64 * 3, 64, 64,
-        64,
-        null,
-        null);
-    currPlayerPickup++;
-    currPlayerWalk++;
-    currPlayerPickup %= PlayerAssets.upAnimations.size();
-    currPlayerWalk %= PlayerAssets.upAnimations.size();
+
     // End Draw
     bs.show();
     g.dispose();
