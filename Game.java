@@ -116,6 +116,14 @@ public class Game implements Runnable, KeyListener {
     // currPlayerPickup %= PlayerAssets.upAnimations.size();
     // currPlayerWalk %= PlayerAssets.upAnimations.size();
     // currPlayerDance %= PlayerAssets.danceAnimations.size();
+    for (BufferedImage[][] layer : BackgroundAssets.firstLevelLayers) {
+      for (int i = 0; i < TurtleHacks.HEIGHT / 64; i++) {
+        for (int j = 0; j < TurtleHacks.WIDTH / 64; j++) {
+          g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
+        }
+      }
+    }
+
     // End Draw
     bs.show();
     g.dispose();
