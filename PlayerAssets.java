@@ -10,6 +10,7 @@ public class PlayerAssets {
   public static ArrayList<BufferedImage> pickUpLeftAnimations;
   public static ArrayList<BufferedImage> pickUpUpAnimations;
   public static ArrayList<BufferedImage> pickUpDownAnimations;
+  public static ArrayList<BufferedImage> danceAnimations;
 
   public static void init(SpriteSheet players) {
     // Main player sprite
@@ -60,6 +61,16 @@ public class PlayerAssets {
     for (int i = 0; i < 8; i++) {
       PlayerAssets.pickUpUpAnimations.add(players.crop(64 * i, 64 * 4, 64, 64));
     }
+
+    PlayerAssets.danceAnimations = new ArrayList<BufferedImage>();
+    
+    for (int i = 0; i < 6; i++) {
+      PlayerAssets.danceAnimations.add(players.crop(64 * i, 64 * 14, 64, 64));
+    }
+    for (int i = 5; i >= 0; i--) {  
+      PlayerAssets.danceAnimations.add(players.crop(64 * i, 64 * 14, 64, 64));
+    }
+
 
   }
 
