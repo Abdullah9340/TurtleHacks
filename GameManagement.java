@@ -24,13 +24,10 @@ public class GameManagement implements KeyListener {
   private int total_points = 0;
   private int round_number = 1;
 
+
   // Player Grabbing Logic
   boolean isGrabbing = false;
   int grabFrame = 0;
-
-  // Player Rolling Logic
-  boolean isRolling = false;
-  int rollingFrame = 0;
 
   // Are we in the main menu
   boolean isMenuState = true;
@@ -64,33 +61,10 @@ public class GameManagement implements KeyListener {
 
   // Creates 10 garbage objects with random coordinates and adds them to an array
   public void generateGarbage() {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 10; i++) {
       GarbageObject garbage = new GarbageObject();
-      while (!garbageValid(garbage)) {
-        garbage = new GarbageObject();
-      }
       trashList.add(garbage);
     }
-  }
-
-  public boolean garbageValid(GarbageObject garbage) {
-    if (garbage.getX() == (int) player.getX() && garbage.getY() == (int) player.getY()) {
-      return false;
-    }
-    for (GarbageObject obj : trashList) {
-      if (obj.getX() == garbage.getX() && obj.getY() == garbage.getY()) {
-        return false;
-      }
-    }
-
-    if (!allowedObjects
-        .contains(
-            levelTileMaps.get(currentLevel)
-                .get(levelTileMaps.get(currentLevel).size() - 1)[garbage.getY()][garbage.getX()])) {
-      return false;
-    }
-
-    return true;
   }
 
   public void render(Graphics g) {
@@ -112,11 +86,12 @@ public class GameManagement implements KeyListener {
 
     g.setColor(Color.black);
     g.setFont(new Font("Serif", Font.BOLD, 25));
-    g.drawString("Round: " + round_number, 16 * 64 - 48, 0 * 64 + 32);
+    g.drawString("Round: " + round_number, 16*64 - 48, 0*64 + 32);
 
     g.setColor(Color.black);
     g.setFont(new Font("Serif", Font.BOLD, 25));
-    g.drawString("Points: " + total_points, 16 * 64 - 48, 1 * 64 + 16);
+    g.drawString("Points: " + total_points, 16*64 - 48, 1*64 + 16);
+
 
     for (GarbageObject obj : trashList) {
       obj.render(g);
@@ -133,13 +108,6 @@ public class GameManagement implements KeyListener {
         isGrabbing = false;
         grabFrame = 0;
       }
-    } else if (isRolling) {
-      player.renderRoll(g, rollingFrame);
-      rollingFrame++;
-      if (rollingFrame == PlayerAssets.rollAnimations.size()) {
-        isRolling = false;
-        rollingFrame = 0;
-      }
     } else {
       player.render(g);
     }
@@ -149,7 +117,7 @@ public class GameManagement implements KeyListener {
   public void update() {
     if (isMenuState)
       return;
-    if (isGrabbing || isRolling)
+    if (isGrabbing)
       return;
     player.update();
     checkCollisions();
@@ -213,9 +181,8 @@ public class GameManagement implements KeyListener {
     }
 
     if (player.getX() + xDir == trashBin.get_X() && player.getY() + yDir == trashBin.get_Y()) {
-      // check inventory, if match garbage type, increase point and take away from
-      // inventory
-      // if recycling, don't take away from inventory and subtract 2 points
+      //check inventory, if match garbage type, increase point and take away from inventory
+      //if recycling, don't take away from inventory and subtract 2 points
 
     }
 
@@ -248,16 +215,11 @@ public class GameManagement implements KeyListener {
       xDir = -1;
       yDir = 0;
     }
-
+    
     for (GarbageObject obj : trashList) {
-      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()) {
-        if (player.isInventoryFull())
-          break;
+      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()){
         trashList.remove(obj);
-        player.pushGarbage(obj);
-        if (trashList.size() == 0) {
-          isRolling = true;
-        }
+        player.incrementGarbage(obj.getGarbageType());
         break;
       }
     }

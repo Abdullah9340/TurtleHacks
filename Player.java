@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player implements KeyListener {
@@ -26,13 +25,9 @@ public class Player implements KeyListener {
 
   // Hotbar variables
   private HashMap<String, Integer> hotbar;
-  private int inventoryLimit = 1;
-  private ArrayList<GarbageObject> inventory;
   
-
   public Player(double x, double y) {
-    this.hotbar = new HashMap<>();
-    this.inventory = new ArrayList<GarbageObject>();
+    hotbar = new HashMap<>();
     this.x = x;
     this.y = y;
     this.hotbar.put("bottle", 0);
@@ -115,37 +110,13 @@ public class Player implements KeyListener {
     renderHotbar(g);
   }
 
-  public void renderRoll(Graphics g, int rollIndex) {
-    int nextX = (int) (x * 64), nextY = (int) (y * 64) - 8;
-    g.drawImage(PlayerAssets.rollAnimations.get(rollIndex), nextX, nextY, null, null);
-    renderHotbar(g);
-  }
-
   public void renderHotbar(Graphics g) {
-<<<<<<< HEAD
-    g.setColor(Color.darkGray);
-    for (int i = 0; i < inventoryLimit; i++) {
-      drawThickRect(g, i * 64, 0, 64, 64, 3);
-    }
-    for (int i = 0; i < inventory.size(); i++) {
-      g.drawImage(inventory.get(i).getIcon(), i * 64, 0, 64, 64, null, null);
-    }
-
-    // g.drawString("x"+hotbar.get("bottle"), 64, 64);
-    // g.drawImage(GarbageAssets.battery, 64, 0, 64, 64, null, null);
-    // g.drawString("x"+hotbar.get("battery"), 128, 32);
-  }
-
-  public void pushGarbage(GarbageObject garbage){
-    inventory.add(garbage);
-=======
     g.setColor(Color.black);
     g.setFont(new Font("Old English Text MT", Font.PLAIN, 30));
     g.drawImage(GarbageAssets.bottle, 0, 0, 64, 64, null, null);
-    g.drawString("x" + hotbar.get("bottle"), 64, 32);
+    g.drawString("x"+hotbar.get("bottle"), 64, 32);
     g.drawImage(GarbageAssets.battery, 64, 0, 64, 64, null, null);
-    g.drawString("x" + hotbar.get("battery"), 128, 32);
->>>>>>> master
+    g.drawString("x"+hotbar.get("battery"), 128, 32);
   }
 
   public void updateAfterCollide() {
@@ -157,10 +128,6 @@ public class Player implements KeyListener {
 
     stopped = true;
     currPlayerWalk = 0;
-  }
-
-  public boolean isInventoryFull(){
-    return inventory.size() == inventoryLimit;
   }
 
   @Override
@@ -249,17 +216,9 @@ public class Player implements KeyListener {
     this.velocityY = velocity;
   }
 
-<<<<<<< HEAD
-  public void drawThickRect(Graphics g, int x, int y, int width,
-            int height, int thickness) {
-        for (int i = 0; i < thickness; i++)
-            g.drawRect(x + i, y + i, width - 2 * i, height - 2 * i);
-    }
-=======
   public void incrementGarbage(String garbageType) {
-    this.hotbar.put(garbageType, hotbar.get(garbageType) + 1);
+    this.hotbar.put(garbageType, hotbar.get(garbageType)+1);
     System.out.println(hotbar.get(garbageType));
   }
->>>>>>> master
 
 }
