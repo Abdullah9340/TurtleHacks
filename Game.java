@@ -64,38 +64,14 @@ public class Game implements Runnable, KeyListener {
     g = bs.getDrawGraphics();
     g.clearRect(0, 0, WIDTH, HEIGHT); // Clear the background
     g.setColor(Color.BLACK);
-    g.drawImage(PlayerAssets.upAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 0, 0, 64, 64, null,
-        null);
-    g.drawImage(PlayerAssets.leftAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 64, 0, 64, 64, null,
-        null);
-    g.drawImage(PlayerAssets.rightAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 64 * 2, 0, 64, 64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.downAnimations.get(currPlayerWalk % PlayerAssets.upAnimations.size()), 64 * 3, 0, 64, 64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.pickUpUpAnimations.get(currPlayerPickup % PlayerAssets.pickUpDownAnimations.size()), 0, 64,
-        64, 64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.pickUpDownAnimations.get(currPlayerPickup % PlayerAssets.pickUpLeftAnimations.size()), 64,
-        64, 64, 64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.pickUpLeftAnimations.get(currPlayerPickup % PlayerAssets.pickUpRightAnimations.size()),
-        64 * 2, 64, 64,
-        64,
-        null,
-        null);
-    g.drawImage(PlayerAssets.pickUpRightAnimations.get(currPlayerPickup % PlayerAssets.pickUpDownAnimations.size()),
-        64 * 3, 64, 64,
-        64,
-        null,
-        null);
-    currPlayerPickup++;
-    currPlayerWalk++;
-    currPlayerPickup %= PlayerAssets.upAnimations.size();
-    currPlayerWalk %= PlayerAssets.upAnimations.size();
+    for (BufferedImage[][] layer : BackgroundAssets.firstLevelLayers) {
+      for (int i = 0; i < TurtleHacks.HEIGHT / 64; i++) {
+        for (int j = 0; j < TurtleHacks.WIDTH / 64; j++) {
+          g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
+        }
+      }
+    }
+
     // End Draw
     bs.show();
     g.dispose();
