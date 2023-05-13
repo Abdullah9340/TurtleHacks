@@ -41,4 +41,11 @@ public class GarbageObject {
         g.drawImage(trashIcon, x_pos, y_pos, 64, 64, null, null);
     }
 
+    public int getX() {
+        return x_pos;
+    }
+
+    public int getY() {
+        return y_pos;
+    }
 }
