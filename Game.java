@@ -22,18 +22,13 @@ public class Game implements Runnable, KeyListener {
   GameManagement manager;
 
   private boolean running = false;
-  private boolean isMenu = false;
 
   // Variables for framerate
   private double timePerTick, delta;
   long now, lastTime;
   private int FPS = 15;
 
-  int currPlayerWalk, currPlayerPickup, currPlayerDance = 0;
-
   private Thread thread;
-
-  private ArrayList<GarbageObject> trashList;
 
   /*-
   * Game() 
@@ -52,27 +47,14 @@ public class Game implements Runnable, KeyListener {
   // private variable to hold list of garbage objects
 
   public void init() {
-    GarbageObject.init();
-
-    trashList = new ArrayList<GarbageObject>();
-
     display = new Display(title, WIDTH, HEIGHT); // Set up display
     Assets.init();
-
-    for (int i = 0; i < 10; i++) {
-      GarbageObject garbage = new GarbageObject();
-
-      trashList.add(garbage);
-    }
-
-    // generate 10 garbage objects
 
     player = new Player(5, 5);
     manager = new GameManagement(player);
     display.getJFrame().addKeyListener(player); // Set up keylisteners
     display.getJFrame().addKeyListener(manager);
     display.getJFrame().addKeyListener(this);
-    isMenu = false;
     timePerTick = 1000000000 / FPS;
     delta = 0;
     lastTime = System.nanoTime();
@@ -139,33 +121,22 @@ public class Game implements Runnable, KeyListener {
     // Create constant framerate
     // Main game loop
     while (running) {
-      // If the player is in the menu state
-      if (isMenu) {
-        // Menu Stuff
+      now = System.nanoTime();
+      delta += (now - lastTime) / timePerTick;
+      lastTime = now;
 
-      } else { // If the player is has started the game
-        now = System.nanoTime();
-        delta += (now - lastTime) / timePerTick;
-        lastTime = now;
-
-        // Main game loop
-        if (delta >= 1) {
-          update();
-          render();
-          delta--;
-        }
+      // Main game loop
+      if (delta >= 1) {
+        update();
+        render();
+        delta--;
       }
     }
   }
 
   @Override
   public void keyTyped(KeyEvent e) {
-    if (isMenu) {
-      isMenu = false;
-      timePerTick = 1000000000 / FPS;
-      delta = 0;
-      lastTime = System.nanoTime();
-    }
+
   }
 
   @Override

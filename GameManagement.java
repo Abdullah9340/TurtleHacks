@@ -12,6 +12,8 @@ public class GameManagement implements KeyListener {
 
   private Player player;
 
+  private ArrayList<GarbageObject> trashList;
+
   // Player Grabbing Logic
   boolean isGrabbing = false;
   int grabFrame = 0;
@@ -23,6 +25,19 @@ public class GameManagement implements KeyListener {
     levelTileMaps = new ArrayList<>();
     levelTileMaps.add(BackgroundAssets.firstLevelLayers);
     this.player = player;
+
+    GarbageObject.init();
+    trashList = new ArrayList<GarbageObject>();
+
+    generateGarbage();
+  }
+
+  public void generateGarbage() {
+    for (int i = 0; i < 10; i++) {
+      GarbageObject garbage = new GarbageObject();
+
+      trashList.add(garbage);
+    }
   }
 
   public void render(Graphics g) {
@@ -40,6 +55,11 @@ public class GameManagement implements KeyListener {
         }
       }
     }
+
+    for (GarbageObject obj : trashList) {
+      obj.render(g);
+    }
+
     if (isGrabbing) {
       player.renderGrab(g, grabFrame);
       grabFrame++;
@@ -60,6 +80,10 @@ public class GameManagement implements KeyListener {
       return;
     player.update();
 
+  }
+
+  public void checkCollisions() {
+    
   }
 
   @Override
