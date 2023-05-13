@@ -42,9 +42,16 @@ public class Game implements Runnable, KeyListener {
     this.start(); // Start the thread/game
   }
 
+  // private variable to hold list of garbage objects
+  //
+
   public void init() {
+
     display = new Display(title, WIDTH, HEIGHT); // Set up display
     Assets.init();
+
+    // generate 10 garbage objects
+
     isMenu = false;
     timePerTick = 1000000000 / FPS;
     delta = 0;
@@ -56,6 +63,8 @@ public class Game implements Runnable, KeyListener {
   }
 
   public void render() {
+    // loop over each garbage object and call its render func
+
     bs = display.getCanvas().getBufferStrategy();
     if (bs == null) { // Create a buffer strategy
       display.getCanvas().createBufferStrategy(3);
