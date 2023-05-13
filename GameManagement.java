@@ -22,6 +22,10 @@ public class GameManagement implements KeyListener {
   boolean isGrabbing = false;
   int grabFrame = 0;
 
+  // Player Rolling Logic
+  boolean isRolling = false;
+  int rollingFrame = 0;
+
   // Are we in the main menu
   boolean isMenuState = true;
 
@@ -51,11 +55,33 @@ public class GameManagement implements KeyListener {
   }
 
   public void generateGarbage() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 3; i++) {
       GarbageObject garbage = new GarbageObject();
-      System.out.println(garbage.getX() + " " + garbage.getY());
+      while (!garbageValid(garbage)) {
+        garbage = new GarbageObject();
+      }
       trashList.add(garbage);
     }
+  }
+
+  public boolean garbageValid(GarbageObject garbage) {
+    if (garbage.getX() == (int) player.getX() && garbage.getY() == (int) player.getY()) {
+      return false;
+    }
+    for (GarbageObject obj : trashList) {
+      if (obj.getX() == garbage.getX() && obj.getY() == garbage.getY()) {
+        return false;
+      }
+    }
+
+    if (!allowedObjects
+        .contains(
+            levelTileMaps.get(currentLevel)
+                .get(levelTileMaps.get(currentLevel).size() - 1)[garbage.getY()][garbage.getX()])) {
+      return false;
+    }
+
+    return true;
   }
 
   public void render(Graphics g) {
@@ -87,6 +113,13 @@ public class GameManagement implements KeyListener {
         isGrabbing = false;
         grabFrame = 0;
       }
+    } else if (isRolling) {
+      player.renderRoll(g, rollingFrame);
+      rollingFrame++;
+      if (rollingFrame == PlayerAssets.rollAnimations.size()) {
+        isRolling = false;
+        rollingFrame = 0;
+      }
     } else {
       player.render(g);
     }
@@ -96,7 +129,7 @@ public class GameManagement implements KeyListener {
   public void update() {
     if (isMenuState)
       return;
-    if (isGrabbing)
+    if (isGrabbing || isRolling)
       return;
     player.update();
     checkCollisions();
@@ -149,12 +182,15 @@ public class GameManagement implements KeyListener {
       xDir = -1;
       yDir = 0;
     }
-    
+
     for (GarbageObject obj : trashList) {
       if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()){
         if (player.isInventoryFull()) break;
         trashList.remove(obj);
         player.pushGarbage(obj);
+        if (trashList.size() == 0) {
+          isRolling = true;
+        }
         break;
       }
     }

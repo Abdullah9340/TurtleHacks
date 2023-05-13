@@ -11,6 +11,7 @@ public class PlayerAssets {
   public static ArrayList<BufferedImage> pickUpUpAnimations;
   public static ArrayList<BufferedImage> pickUpDownAnimations;
   public static ArrayList<BufferedImage> danceAnimations;
+  public static ArrayList<BufferedImage> rollAnimations;
 
   public static void init(SpriteSheet players) {
     // Main player sprite
@@ -63,14 +64,32 @@ public class PlayerAssets {
     }
 
     PlayerAssets.danceAnimations = new ArrayList<BufferedImage>();
-    
+
     for (int i = 0; i < 6; i++) {
       PlayerAssets.danceAnimations.add(players.crop(64 * i, 64 * 14, 64, 64));
     }
-    for (int i = 5; i >= 0; i--) {  
+    for (int i = 5; i >= 0; i--) {
       PlayerAssets.danceAnimations.add(players.crop(64 * i, 64 * 14, 64, 64));
     }
 
+    PlayerAssets.rollAnimations = new ArrayList<>();
+    for (int i = 0; i < 13; i++) {
+      PlayerAssets.rollAnimations.add(players.crop(64 * i, 64 * 16, 64, 64));
+    }
+    for (int i = 0; i < 13; i++) {
+      PlayerAssets.rollAnimations.add(players.crop(64 * i, 64 * 18, 64, 64));
+    }
+
+    for (BufferedImage img : PlayerAssets.danceAnimations) {
+      PlayerAssets.rollAnimations.add(img);
+    }
+
+    for (int i = 0; i < 6; i++) {
+      PlayerAssets.rollAnimations.add(players.crop(64 * i, 64 * 20, 64, 64));
+    }
+    for (int i = 5; i >= 0; i--) {
+      PlayerAssets.rollAnimations.add(players.crop(64 * i, 64 * 20, 64, 64));
+    }
 
   }
 
