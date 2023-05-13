@@ -25,7 +25,7 @@ public class Game implements Runnable, KeyListener {
   // Variables for framerate
   private double timePerTick, delta;
   long now, lastTime;
-  private int FPS = 10;
+  private int FPS = 15;
 
   int currPlayerWalk, currPlayerPickup, currPlayerDance = 0;
 
@@ -182,7 +182,6 @@ public class Game implements Runnable, KeyListener {
 
   @Override
   public void keyTyped(KeyEvent e) {
-    // TODO Auto-generated method stub
     if (isMenu) {
       isMenu = false;
       timePerTick = 1000000000 / FPS;

@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 public class Player implements KeyListener {
 
@@ -9,6 +10,7 @@ public class Player implements KeyListener {
   private double velocityX = 0;
   private double velocityY = 0;
   int walkSize = PlayerAssets.upAnimations.size();
+  int pickupSize = PlayerAssets.pickUpDownAnimations.size();
   int currPlayerWalk = 0;
 
   // Movement logic
@@ -76,6 +78,50 @@ public class Player implements KeyListener {
 
   }
 
+  public void grab(Graphics g, BufferedImage[] backgroundTile) {
+    if (!stopped) return;
+
+    int FPS = 15;
+    double timePerTick = 1000000000 / FPS;
+    double delta = 0;
+    long lastTime = System.nanoTime();
+    int currentFrame = 0;
+
+    while (currentFrame < pickupSize){
+      long now = System.nanoTime();
+      delta += (now - lastTime) / timePerTick;
+      lastTime = now;
+
+      if (delta >= 1) {
+        for (BufferedImage background : backgroundTile){
+          g.drawImage(background, (int) (x * 64), (int) (y * 64), 64, 64, null, null);
+        }
+        int nextX = (int) (x * 64);
+        int nextY = (int) (y * 64);
+        if (getDirection() == 'w') {
+          g.drawImage(PlayerAssets.pickUpUpAnimations.get(currentFrame), nextX, nextY, 64, 64, null, null);
+        } else if (getDirection() == 'a') {
+          g.drawImage(PlayerAssets.pickUpLeftAnimations.get(currentFrame), nextX, nextY, 64, 64, null,
+              null);
+        } else if (getDirection() == 'd') {
+          g.drawImage(PlayerAssets.pickUpRightAnimations.get(currentFrame), nextX, nextY, 64, 64,
+              null,
+              null);
+        } else if (getDirection() == 's') {
+          g.drawImage(PlayerAssets.pickUpDownAnimations.get(currentFrame), nextX, nextY, 64, 64,
+              null,
+              null);
+        }
+        currentFrame++;
+        delta--;
+      }
+    }
+
+
+
+
+  }
+
   @Override
   public void keyTyped(KeyEvent e) {
     throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
@@ -104,7 +150,10 @@ public class Player implements KeyListener {
     // set to the letter d or right arrow on the keyboard
     if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D' || e.getKeyCode() == 39) {
       nextDirection = 'd';
+    } 
 
+    if (e.getKeyCode() == 13){
+      // grab(g, BackgroundAssets.sandTile)
     }
   }
 
