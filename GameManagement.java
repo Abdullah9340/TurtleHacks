@@ -10,6 +10,12 @@ public class GameManagement implements KeyListener {
   private ArrayList<ArrayList<BufferedImage[][]>> levelTileMaps;
   private int currentLevel = 0;
 
+  // round # dummy variable
+  private int test = 0;
+
+  // Garbage dummy variable
+  private int currentGarbage = 0;
+
   private Player player;
 
   private ArrayList<GarbageObject> trashList;
@@ -31,6 +37,8 @@ public class GameManagement implements KeyListener {
 
     generateGarbage();
   }
+
+  
 
   public void generateGarbage() {
     for (int i = 0; i < 10; i++) {
@@ -56,6 +64,17 @@ public class GameManagement implements KeyListener {
       }
     }
 
+  // Ignore not needed
+  //           for (int i = 0; i < 10; i++) {
+  //   currentGarbage++;
+  //   System.out.println("Current Garbage:" + currentGarbage);
+  //   if (currentGarbage == 9) {
+  //     currentLevel++;
+  //     currentGarbage = 0;
+  //     System.out.println("Current Round:" + currentLevel);
+  //   }
+  // }
+
     for (GarbageObject obj : trashList) {
       obj.render(g);
     }
@@ -63,10 +82,27 @@ public class GameManagement implements KeyListener {
     if (isGrabbing) {
       player.renderGrab(g, grabFrame);
       grabFrame++;
+
+
+      
+
       if (grabFrame == PlayerAssets.pickUpDownAnimations.size()) {
         isGrabbing = false;
         grabFrame = 0;
+
+        // When grab increment garbage (Placeholder for actually picking up garbage)
+        currentGarbage++;
+        System.out.println("Current Garbage:" + currentGarbage);
+
+        // Placeholder for # of garbage
+        if (currentGarbage == 10) {
+          // Increment round # and set current garbage to 0
+          test++;
+          currentGarbage = 0;
+          System.out.println("Current Round:" + test);
+        }
       }
+
     } else {
       player.render(g);
     }
@@ -85,7 +121,7 @@ public class GameManagement implements KeyListener {
   public void checkCollisions() {
     
   }
-
+  
   @Override
   public void keyTyped(KeyEvent e) {
     // TODO Auto-generated method stub
