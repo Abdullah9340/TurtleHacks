@@ -64,6 +64,7 @@ public class GameManagement implements KeyListener {
       player.renderGrab(g, grabFrame);
       grabFrame++;
       if (grabFrame == PlayerAssets.pickUpDownAnimations.size()) {
+        checkForGarbage();
         isGrabbing = false;
         grabFrame = 0;
       }
@@ -84,6 +85,38 @@ public class GameManagement implements KeyListener {
 
   public void checkCollisions() {
     
+  }
+
+  public void checkForGarbage() {
+    char direction = player.getDirection();
+    int xDir = 0;
+    int yDir = 0;
+
+    if (direction == 'w') {
+      xDir = 0;
+      yDir = -1;
+    }
+    if (direction == 's') {
+      xDir = 0;
+      yDir = 1;
+
+    }
+    if (direction == 'd') {
+      xDir = 1;
+      yDir = 0;
+
+    }
+    if (direction == 'a') {
+      xDir = -1;
+      yDir = 0;
+    }
+    
+    for (GarbageObject obj : trashList) {
+      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()){
+        trashList.remove(obj);
+        break;
+      }
+    }
   }
 
   @Override

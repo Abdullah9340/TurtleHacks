@@ -5,10 +5,13 @@ import java.awt.image.BufferedImage;
 
 public class Player implements KeyListener {
 
+  // Movement variables
   private double x, y;
   private char direction = 's';
   private double velocityX = 0;
   private double velocityY = 0;
+
+  // Animation array sizes
   int walkSize = PlayerAssets.upAnimations.size();
   int pickupSize = PlayerAssets.pickUpDownAnimations.size();
   int currPlayerWalk = 0;
@@ -16,6 +19,9 @@ public class Player implements KeyListener {
   // Movement logic
   boolean stopped = true;
   char nextDirection = direction;
+
+  // Hotbar variables
+  int[] hotbar = {0, 0};
 
   public Player(double x, double y) {
     this.x = x;
