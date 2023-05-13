@@ -1,8 +1,10 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class Player implements KeyListener {
 
   // Hotbar variables
   private HashMap<String, Integer> hotbar;
-  private int inventoryLimit = 1;
+  private int inventoryLimit = 3;
   private ArrayList<GarbageObject> inventory;
 
   public Player(double x, double y) {
@@ -126,7 +128,7 @@ public class Player implements KeyListener {
       drawThickRect(g, i * 64, 0, 64, 64, 3);
     }
     for (int i = 0; i < inventory.size(); i++) {
-      g.drawImage(inventory.get(i).getIcon(), i * 64, 0, 64, 64, null, null);
+      g.drawImage(inventory.get(i).getRotatedIcon(), i * 64, 0, 64, 64, null, null);
     }
   }
 

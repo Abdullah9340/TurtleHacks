@@ -7,6 +7,7 @@ public class GarbageObject {
     private int x_pos, y_pos;
     private String garbageType;
     private BufferedImage trashIcon;
+    private BufferedImage trashRotatedIcon;
     public static HashMap<Integer, String> typeMap = new HashMap<Integer, String>();
     public static HashMap<String, BufferedImage> iconMap = new HashMap<String, BufferedImage>();
 
@@ -16,6 +17,8 @@ public class GarbageObject {
 
         iconMap.put("bottle", GarbageAssets.bottle);
         iconMap.put("battery", GarbageAssets.battery);
+        iconMap.put("bottleRotated", GarbageAssets.bottleRotated);
+        iconMap.put("batteryRotated", GarbageAssets.batteryRotated);
     }
 
     public GarbageObject() {
@@ -32,6 +35,7 @@ public class GarbageObject {
         garbageType = typeMap.get(typeInt);
 
         trashIcon = iconMap.get(garbageType);
+        trashRotatedIcon = iconMap.get(garbageType+"Rotated");
 
     }
 
@@ -51,7 +55,12 @@ public class GarbageObject {
         return trashIcon;
     }
     
+    public BufferedImage getRotatedIcon() {
+      return trashRotatedIcon;
+    }
+
     public String getGarbageType() {
       return garbageType;
     }
+
 }
