@@ -152,8 +152,9 @@ public class GameManagement implements KeyListener {
     
     for (GarbageObject obj : trashList) {
       if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()){
+        if (player.isInventoryFull()) break;
         trashList.remove(obj);
-        player.incrementGarbage(obj.getGarbageType());
+        player.pushGarbage(obj);
         break;
       }
     }
