@@ -18,6 +18,9 @@ public class GameManagement implements KeyListener {
 
   private HashSet<BufferedImage> allowedObjects;
 
+  private GarbageBins trashBin, recycleBin;
+
+
   // Player Grabbing Logic
   boolean isGrabbing = false;
   int grabFrame = 0;
@@ -32,6 +35,8 @@ public class GameManagement implements KeyListener {
 
     GarbageObject.init();
     trashList = new ArrayList<GarbageObject>();
+    trashBin = new GarbageBins("trash");
+    recycleBin = new GarbageBins("recycling");
     allowedObjects = new HashSet<>();
 
     allowedObjects.add(BackgroundAssets.sandTileBasic);
@@ -53,7 +58,7 @@ public class GameManagement implements KeyListener {
   public void generateGarbage() {
     for (int i = 0; i < 10; i++) {
       GarbageObject garbage = new GarbageObject();
-      System.out.println(garbage.getX() + " " + garbage.getY());
+      //System.out.println(garbage.getX() + " " + garbage.getY());
       trashList.add(garbage);
     }
   }
@@ -78,6 +83,9 @@ public class GameManagement implements KeyListener {
     for (GarbageObject obj : trashList) {
       obj.render(g);
     }
+
+    trashBin.render(g);
+    recycleBin.render(g);
 
     if (isGrabbing) {
       player.renderGrab(g, grabFrame);
@@ -124,6 +132,41 @@ public class GameManagement implements KeyListener {
       player.updateAfterCollide();
 
     }
+  }
+
+  public void checkForBin() {
+    char direction = player.getDirection();
+    int xDir = 0;
+    int yDir = 0;
+
+    if (direction == 'w') {
+      xDir = 0;
+      yDir = -1;
+    }
+    if (direction == 's') {
+      xDir = 0;
+      yDir = 1;
+
+    }
+    if (direction == 'd') {
+      xDir = 1;
+      yDir = 0;
+
+    }
+    if (direction == 'a') {
+      xDir = -1;
+      yDir = 0;
+    }
+
+    if (player.getX() + xDir == trashBin.get_X() && player.getY() + yDir == trashBin.get_Y()) {
+      //check inventory, if match garbage type, increase point and take away from inventory
+      //if recycling, don't take away from inventory and subtract 2 points
+    }
+
+    if (player.getX() + xDir == trashBin.get_X() && player.getY() + yDir == trashBin.get_Y()) {
+
+    }
+
   }
 
   public void checkForGarbage() {
