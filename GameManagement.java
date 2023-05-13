@@ -88,6 +88,14 @@ public class GameManagement implements KeyListener {
       }
     }
 
+    if (trashBin.get_X() == garbage.getX() && trashBin.get_Y() == garbage.getY()) {
+      return false;
+    }
+
+    if (recycleBin.get_X() == garbage.getX() && recycleBin.get_Y() == garbage.getY()) {
+      return false;
+    }
+
     if (!allowedObjects
         .contains(
             levelTileMaps.get(currentLevel)
