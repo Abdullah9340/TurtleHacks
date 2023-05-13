@@ -22,6 +22,10 @@ public class GameManagement implements KeyListener {
   boolean isGrabbing = false;
   int grabFrame = 0;
 
+  // Player Rolling Logic
+  boolean isRolling = false;
+  int rollingFrame = 0;
+
   // Are we in the main menu
   boolean isMenuState = true;
 
@@ -51,7 +55,7 @@ public class GameManagement implements KeyListener {
   }
 
   public void generateGarbage() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 3; i++) {
       GarbageObject garbage = new GarbageObject();
       while (!garbageValid(garbage)) {
         garbage = new GarbageObject();
@@ -109,6 +113,13 @@ public class GameManagement implements KeyListener {
         isGrabbing = false;
         grabFrame = 0;
       }
+    } else if (isRolling) {
+      player.renderRoll(g, rollingFrame);
+      rollingFrame++;
+      if (rollingFrame == PlayerAssets.rollAnimations.size()) {
+        isRolling = false;
+        rollingFrame = 0;
+      }
     } else {
       player.render(g);
     }
@@ -118,7 +129,7 @@ public class GameManagement implements KeyListener {
   public void update() {
     if (isMenuState)
       return;
-    if (isGrabbing)
+    if (isGrabbing || isRolling)
       return;
     player.update();
     checkCollisions();
@@ -175,6 +186,9 @@ public class GameManagement implements KeyListener {
     for (GarbageObject obj : trashList) {
       if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()) {
         trashList.remove(obj);
+        if (trashList.size() == 0) {
+          isRolling = true;
+        }
         player.incrementGarbage(obj.getGarbageType());
         break;
       }

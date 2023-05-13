@@ -25,7 +25,7 @@ public class Player implements KeyListener {
 
   // Hotbar variables
   private HashMap<String, Integer> hotbar;
-  
+
   public Player(double x, double y) {
     hotbar = new HashMap<>();
     this.x = x;
@@ -110,13 +110,19 @@ public class Player implements KeyListener {
     renderHotbar(g);
   }
 
+  public void renderRoll(Graphics g, int rollIndex) {
+    int nextX = (int) (x * 64), nextY = (int) (y * 64) - 8;
+    g.drawImage(PlayerAssets.rollAnimations.get(rollIndex), nextX, nextY, null, null);
+    renderHotbar(g);
+  }
+
   public void renderHotbar(Graphics g) {
     g.setColor(Color.black);
     g.setFont(new Font("Old English Text MT", Font.PLAIN, 30));
     g.drawImage(GarbageAssets.bottle, 0, 0, 64, 64, null, null);
-    g.drawString("x"+hotbar.get("bottle"), 64, 32);
+    g.drawString("x" + hotbar.get("bottle"), 64, 32);
     g.drawImage(GarbageAssets.battery, 64, 0, 64, 64, null, null);
-    g.drawString("x"+hotbar.get("battery"), 128, 32);
+    g.drawString("x" + hotbar.get("battery"), 128, 32);
   }
 
   public void updateAfterCollide() {
@@ -217,7 +223,7 @@ public class Player implements KeyListener {
   }
 
   public void incrementGarbage(String garbageType) {
-    this.hotbar.put(garbageType, hotbar.get(garbageType)+1);
+    this.hotbar.put(garbageType, hotbar.get(garbageType) + 1);
     System.out.println(hotbar.get(garbageType));
   }
 
