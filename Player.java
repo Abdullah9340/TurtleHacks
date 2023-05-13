@@ -58,7 +58,7 @@ public class Player implements KeyListener {
   }
 
   public void render(Graphics g) {
-    int nextX = (int) (x * 64), nextY = (int) (y * 64);
+    int nextX = (int) (x * 64), nextY = (int) (y * 64) - 8;
     // Walk animations
     if (getDirection() == 'w') {
       g.drawImage(PlayerAssets.upAnimations.get(currPlayerWalk), nextX, nextY, 64, 64, null,
@@ -79,7 +79,7 @@ public class Player implements KeyListener {
   }
 
   public void renderGrab(Graphics g, int grabIndex) {
-    int nextX = (int) (x * 64), nextY = (int) (y * 64);
+    int nextX = (int) (x * 64), nextY = (int) (y * 64) - 8;
     if (getDirection() == 'w') {
       g.drawImage(PlayerAssets.pickUpUpAnimations.get(grabIndex), nextX, nextY, 64, 64, null,
           null);
@@ -97,46 +97,15 @@ public class Player implements KeyListener {
     }
   }
 
-  public void grab(Graphics g, BufferedImage[] backgroundTile) {
-    if (!stopped)
-      return;
+  public void updateAfterCollide() {
+    x -= velocityX;
+    y -= velocityY;
 
-    int FPS = 15;
-    double timePerTick = 1000000000 / FPS;
-    double delta = 0;
-    long lastTime = System.nanoTime();
-    int currentFrame = 0;
+    velocityX = 0;
+    velocityY = 0;
 
-    while (currentFrame < pickupSize) {
-      long now = System.nanoTime();
-      delta += (now - lastTime) / timePerTick;
-      lastTime = now;
-
-      if (delta >= 1) {
-        for (BufferedImage background : backgroundTile) {
-          g.drawImage(background, (int) (x * 64), (int) (y * 64), 64, 64, null, null);
-        }
-        int nextX = (int) (x * 64);
-        int nextY = (int) (y * 64);
-        if (getDirection() == 'w') {
-          g.drawImage(PlayerAssets.pickUpUpAnimations.get(currentFrame), nextX, nextY, 64, 64, null, null);
-        } else if (getDirection() == 'a') {
-          g.drawImage(PlayerAssets.pickUpLeftAnimations.get(currentFrame), nextX, nextY, 64, 64, null,
-              null);
-        } else if (getDirection() == 'd') {
-          g.drawImage(PlayerAssets.pickUpRightAnimations.get(currentFrame), nextX, nextY, 64, 64,
-              null,
-              null);
-        } else if (getDirection() == 's') {
-          g.drawImage(PlayerAssets.pickUpDownAnimations.get(currentFrame), nextX, nextY, 64, 64,
-              null,
-              null);
-        }
-        currentFrame++;
-        delta--;
-      }
-    }
-
+    stopped = true;
+    currPlayerWalk = 0;
   }
 
   @Override
@@ -194,11 +163,19 @@ public class Player implements KeyListener {
   }
 
   public double getX() {
-    return x;
+    if (direction == 'a') {
+      return Math.floor(x);
+    } else {
+      return Math.ceil(x);
+    }
   }
 
   public double getY() {
-    return y;
+    if (direction == 's') {
+      return Math.ceil(y);
+    } else {
+      return Math.floor(y);
+    }
   }
 
   public void setDirection(char direction) {
