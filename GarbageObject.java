@@ -33,8 +33,6 @@ public class GarbageObject {
 
         trashIcon = iconMap.get(garbageType);
 
-        // randomly set x,y positions, set garbage type, once have garbage type set the
-
     }
 
     public void render(Graphics g) {
