@@ -15,7 +15,7 @@ public class Game implements Runnable, KeyListener {
   private Display display;
   private Graphics g;
   private BufferStrategy bs;
-  
+
   // Player Object
   Player player;
 
@@ -31,6 +31,8 @@ public class Game implements Runnable, KeyListener {
 
   private Thread thread;
 
+  private ArrayList<GarbageObject> trashList;
+
   /*-
   * Game() 
   * Description: This calls the title, sets the width and height Also
@@ -45,9 +47,24 @@ public class Game implements Runnable, KeyListener {
     this.start(); // Start the thread/game
   }
 
+  // private variable to hold list of garbage objects
+
   public void init() {
+    GarbageObject.init();
+
+    trashList = new ArrayList<GarbageObject>();
+
     display = new Display(title, WIDTH, HEIGHT); // Set up display
     Assets.init();
+
+    for (int i = 0; i < 10; i++) {
+      GarbageObject garbage = new GarbageObject();
+
+      trashList.add(garbage);
+    }
+
+    // generate 10 garbage objects
+
     player = new Player(5, 5);
     display.getJFrame().addKeyListener(player); // Set up keylisteners
     display.getJFrame().addKeyListener(this);
@@ -62,6 +79,8 @@ public class Game implements Runnable, KeyListener {
   }
 
   public void render() {
+    // loop over each garbage object and call its render func
+
     bs = display.getCanvas().getBufferStrategy();
     if (bs == null) { // Create a buffer strategy
       display.getCanvas().createBufferStrategy(3);
@@ -73,43 +92,52 @@ public class Game implements Runnable, KeyListener {
     player.render(g);
 
     // // Walk animations
-    // g.drawImage(PlayerAssets.upAnimations.get(currPlayerWalk % walkSize), 0, 0, 64, 64, null,
-    //     null);
-    // g.drawImage(PlayerAssets.leftAnimations.get(currPlayerWalk % walkSize), 64, 0, 64, 64, null,
-    //     null);
-    // g.drawImage(PlayerAssets.rightAnimations.get(currPlayerWalk % walkSize), 64 * 2, 0, 64, 64,
-    //     null,
-    //     null);
-    // g.drawImage(PlayerAssets.downAnimations.get(currPlayerWalk % walkSize), 64 * 3, 0, 64, 64,
-    //     null,
-    //     null);
+    // g.drawImage(PlayerAssets.upAnimations.get(currPlayerWalk % walkSize), 0, 0,
+    // 64, 64, null,
+    // null);
+    // g.drawImage(PlayerAssets.leftAnimations.get(currPlayerWalk % walkSize), 64,
+    // 0, 64, 64, null,
+    // null);
+    // g.drawImage(PlayerAssets.rightAnimations.get(currPlayerWalk % walkSize), 64 *
+    // 2, 0, 64, 64,
+    // null,
+    // null);
+    // g.drawImage(PlayerAssets.downAnimations.get(currPlayerWalk % walkSize), 64 *
+    // 3, 0, 64, 64,
+    // null,
+    // null);
 
     // // Pickup animations
-    // g.drawImage(PlayerAssets.pickUpUpAnimations.get(currPlayerPickup % pickupSize), 0, 64,
-    //     64, 64,
-    //     null,
-    //     null);
-    // g.drawImage(PlayerAssets.pickUpDownAnimations.get(currPlayerPickup % pickupSize), 64,
-    //     64, 64, 64,
-    //     null,
-    //     null);
-    // g.drawImage(PlayerAssets.pickUpLeftAnimations.get(currPlayerPickup % pickupSize),
-    //     64 * 2, 64, 64,
-    //     64,
-    //     null,
-    //     null);
-    // g.drawImage(PlayerAssets.pickUpRightAnimations.get(currPlayerPickup % pickupSize),
-    //     64 * 3, 64, 64,
-    //     64,
-    //     null,
-    //     null);
-    
+    // g.drawImage(PlayerAssets.pickUpUpAnimations.get(currPlayerPickup %
+    // pickupSize), 0, 64,
+    // 64, 64,
+    // null,
+    // null);
+    // g.drawImage(PlayerAssets.pickUpDownAnimations.get(currPlayerPickup %
+    // pickupSize), 64,
+    // 64, 64, 64,
+    // null,
+    // null);
+    // g.drawImage(PlayerAssets.pickUpLeftAnimations.get(currPlayerPickup %
+    // pickupSize),
+    // 64 * 2, 64, 64,
+    // 64,
+    // null,
+    // null);
+    // g.drawImage(PlayerAssets.pickUpRightAnimations.get(currPlayerPickup %
+    // pickupSize),
+    // 64 * 3, 64, 64,
+    // 64,
+    // null,
+    // null);
+
     // // Dance animations
-    // g.drawImage(PlayerAssets.danceAnimations.get(currPlayerDance % danceSize), 0, 128,
-    //     64, 64,
-    //     null,
-    //     null);
-    
+    // g.drawImage(PlayerAssets.danceAnimations.get(currPlayerDance % danceSize), 0,
+    // 128,
+    // 64, 64,
+    // null,
+    // null);
+
     // currPlayerPickup++;
     // currPlayerWalk++;
     // currPlayerDance++;
@@ -122,6 +150,10 @@ public class Game implements Runnable, KeyListener {
           g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
         }
       }
+    }
+
+    for (GarbageObject garbageImage : trashList) {
+      garbageImage.render(g);
     }
 
     // End Draw
