@@ -2,8 +2,6 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 
-  private static final int width = 32, height = 32; // Declare width and height for certain tile sheet
-
   // Declare all our image assets
 
   public static BufferedImage sandTile;

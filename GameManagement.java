@@ -216,13 +216,14 @@ public class GameManagement implements KeyListener {
     }
 
     for (GarbageObject obj : trashList) {
-      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()) {
+      if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()){
+        if (player.isInventoryFull()) break;
         trashList.remove(obj);
+        player.pushGarbage(obj);
         if (trashList.size() == 0) {
           garbageWavesLeft -= 1;
           isRolling = true;
         }
-        player.incrementGarbage(obj.getGarbageType());
         break;
       }
     }
