@@ -4,52 +4,76 @@ import java.awt.event.KeyListener;
 
 public class Player implements KeyListener {
 
-  private int inventory = 0;
-  private int score = 0;
-  private int x, y;
-  private int FPS = 10;
-  private  char direction = 's';
-  private  int velocityX = 0;
-  private  int velocityY = 0;
-  int walkSize =  PlayerAssets.upAnimations.size();
-  int currPlayerWalk= 0;
+  private double x, y;
+  private char direction = 's';
+  private double velocityX = 0;
+  private double velocityY = 0;
+  int walkSize = PlayerAssets.upAnimations.size();
+  int currPlayerWalk = 0;
 
+  // Movement logic
+  boolean stopped = true;
+  char nextDirection = direction;
 
-  public Player(int x, int y) {
-    this.inventory = 0;
-    this.score = 0;
+  public Player(double x, double y) {
     this.x = x;
     this.y = y;
   }
 
+  public void updateDirectionMovements() {
+    if (direction == 'w') {
+      setVelocityX(0);
+      setVelocityY(-0.25);
+    } else if (direction == 's') {
+      setVelocityX(0);
+      setVelocityY(0.25);
+
+    } else if (direction == 'a') {
+      setVelocityX(-0.25);
+      setVelocityY(0);
+
+    } else if (direction == 'd') {
+      setVelocityX(0.25);
+      setVelocityY(0);
+    }
+  }
 
   public void update() {
+    if (x % 1 == 0 && y % 1 == 0) {
+      if (stopped) {
+        setVelocityX(0);
+        setVelocityY(0);
+        currPlayerWalk = 0;
+      } else {
+        direction = nextDirection;
+        updateDirectionMovements();
+      }
+    }
     x += velocityX;
     y += velocityY;
-    currPlayerWalk += Math.max(Math.abs(velocityX), Math.abs(velocityY));
+    currPlayerWalk += Math.max(Math.abs(velocityX * 4), Math.abs(velocityY * 4));
     currPlayerWalk %= walkSize;
   }
 
   public void render(Graphics g) {
-
+    int nextX = (int) (x * 64), nextY = (int) (y * 64);
     // Walk animations
-    if (getDirection() == 'w'){
-    g.drawImage(PlayerAssets.upAnimations.get(currPlayerWalk), x*64, y*64, 64, 64, null,
-        null);
+    if (getDirection() == 'w') {
+      g.drawImage(PlayerAssets.upAnimations.get(currPlayerWalk), nextX, nextY, 64, 64, null,
+          null);
     } else if (getDirection() == 'a') {
-      g.drawImage(PlayerAssets.leftAnimations.get(currPlayerWalk), x*64, y*64, 64, 64, null,
-        null);
+      g.drawImage(PlayerAssets.leftAnimations.get(currPlayerWalk), nextX, nextY, 64, 64, null,
+          null);
+    } else if (getDirection() == 'd') {
+      g.drawImage(PlayerAssets.rightAnimations.get(currPlayerWalk), nextX, nextY, 64, 64,
+          null,
+          null);
+    } else if (getDirection() == 's') {
+      g.drawImage(PlayerAssets.downAnimations.get(currPlayerWalk), nextX, nextY, 64, 64,
+          null,
+          null);
     }
-    else if (getDirection() == 'd') {
-    g.drawImage(PlayerAssets.rightAnimations.get(currPlayerWalk), x*64, y*64, 64, 64,
-        null,
-        null);
-    }
-    else if (getDirection() == 's') {
-    g.drawImage(PlayerAssets.downAnimations.get(currPlayerWalk), x*64, y*64, 64, 64,
-        null,
-        null);
-    }
+
   }
 
   @Override
@@ -59,55 +83,58 @@ public class Player implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent e) {
-    System.out.println(e.getKeyChar());
+    stopped = false;
     if (e.getKeyChar() == 'w' || e.getKeyChar() == 'W' || e.getKeyCode() == 38) {
-      setDirection('w');
-      setVelocityX(0);
-      setVelocityY(-1);
-    } else if (e.getKeyChar() == 's' || e.getKeyChar() == 'S' || e.getKeyCode() == 40) {
-      setDirection('s');
-      setVelocityX(0);
-      setVelocityY(1);
+      nextDirection = 'w';
 
-    } else if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A' || e.getKeyCode() == 37) {
-      setDirection('a');
-      setVelocityX(-1);
-      setVelocityY(0);
+    }
+    // Movement direction (back)
+    // set to the letter s or down arrow on the keyboard
+    if (e.getKeyChar() == 's' || e.getKeyChar() == 'S' || e.getKeyCode() == 40) {
+      nextDirection = 's';
 
-    } else if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D' || e.getKeyCode() == 39) {
-      setDirection('d');
-      setVelocityX(1);
-      setVelocityY(0);
+    }
+    // Movement direction (left)
+    // set to the letter a or left arrow on the keyboard
+    if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A' || e.getKeyCode() == 37) {
+      nextDirection = 'a';
+
+    }
+    // Movement direction (right)
+    // set to the letter d or right arrow on the keyboard
+    if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D' || e.getKeyCode() == 39) {
+      nextDirection = 'd';
+
     }
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
-    setVelocityX(0);
-    setVelocityY(0);
-    currPlayerWalk = 0;
+    stopped = true;
   }
 
-
-  public int getX(){
+  public double getX() {
     return x;
   }
-  public int getY(){
+
+  public double getY() {
     return y;
   }
 
-  public void setDirection(char direction){
+  public void setDirection(char direction) {
     this.direction = direction;
   }
-  public char getDirection(){
+
+  public char getDirection() {
     return this.direction;
   }
 
-  public void setVelocityX(int velocity){
+  public void setVelocityX(double velocity) {
     this.velocityX = velocity;
   }
-  public void setVelocityY(int velocity){
+
+  public void setVelocityY(double velocity) {
     this.velocityY = velocity;
   }
-  
+
 }
