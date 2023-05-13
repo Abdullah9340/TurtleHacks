@@ -1,5 +1,4 @@
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Assets {
 
@@ -31,7 +30,7 @@ public class Assets {
     // gamewon = ImageLoader.loadImage("Assets/gamewon.png");
 
     // Load Background
-
+    BackgroundAssets.init(background);
     // Load player sprites
     PlayerAssets.init(players);
   }
