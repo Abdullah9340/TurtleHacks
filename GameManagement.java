@@ -43,6 +43,9 @@ public class GameManagement implements KeyListener {
     allowedObjects.add(BackgroundAssets.shoreTileHoriz);
     allowedObjects.add(BackgroundAssets.shoreTileCurveTop);
     allowedObjects.add(BackgroundAssets.shoreTileCurveBottom);
+    allowedObjects.add(BackgroundAssets.sandTileShadowed);
+    allowedObjects.add(BackgroundAssets.sandTileShadowed);
+    allowedObjects.add(BackgroundAssets.sandTileStarFish);
 
     generateGarbage();
   }
@@ -106,6 +109,20 @@ public class GameManagement implements KeyListener {
       if (obj.getX() == (int) player.getX() && obj.getY() == (int) player.getY()) {
         player.updateAfterCollide();
       }
+    }
+    // Player collision with map border
+    if (player.getX() < 0 || player.getX() >= TurtleHacks.WIDTH / 64 || player.getY() < 0
+        || player.getY() >= TurtleHacks.HEIGHT / 64) {
+      player.updateAfterCollide();
+    }
+
+    // Player collision with map objects
+    if (!allowedObjects
+        .contains(
+            levelTileMaps.get(currentLevel)
+                .get(levelTileMaps.get(currentLevel).size() - 1)[(int) player.getY()][(int) player.getX()])) {
+      player.updateAfterCollide();
+
     }
   }
 
