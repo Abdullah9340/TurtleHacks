@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -19,6 +20,9 @@ public class GameManagement implements KeyListener {
   private HashSet<BufferedImage> allowedObjects;
 
   private GarbageBins trashBin, recycleBin;
+
+  private int total_points = 0;
+  private int round_number = 1;
 
 
   // Player Grabbing Logic
@@ -55,10 +59,10 @@ public class GameManagement implements KeyListener {
     generateGarbage();
   }
 
+  // Creates 10 garbage objects with random coordinates and adds them to an array
   public void generateGarbage() {
     for (int i = 0; i < 10; i++) {
       GarbageObject garbage = new GarbageObject();
-      //System.out.println(garbage.getX() + " " + garbage.getY());
       trashList.add(garbage);
     }
   }
@@ -79,6 +83,15 @@ public class GameManagement implements KeyListener {
         }
       }
     }
+
+    g.setColor(Color.black);
+    g.setFont(new Font("Serif", Font.BOLD, 25));
+    g.drawString("Round: " + round_number, 16*64 - 48, 0*64 + 32);
+
+    g.setColor(Color.black);
+    g.setFont(new Font("Serif", Font.BOLD, 25));
+    g.drawString("Points: " + total_points, 16*64 - 48, 1*64 + 16);
+
 
     for (GarbageObject obj : trashList) {
       obj.render(g);
@@ -118,6 +131,15 @@ public class GameManagement implements KeyListener {
         player.updateAfterCollide();
       }
     }
+
+    if (trashBin.get_X() == (int) player.getX() && trashBin.get_Y() == (int) player.getY()) {
+      player.updateAfterCollide();
+    }
+
+    if (recycleBin.get_X() == (int) player.getX() && recycleBin.get_Y() == (int) player.getY()) {
+      player.updateAfterCollide();
+    }
+
     // Player collision with map border
     if (player.getX() < 0 || player.getX() >= TurtleHacks.WIDTH / 64 || player.getY() < 0
         || player.getY() >= TurtleHacks.HEIGHT / 64) {
@@ -161,6 +183,7 @@ public class GameManagement implements KeyListener {
     if (player.getX() + xDir == trashBin.get_X() && player.getY() + yDir == trashBin.get_Y()) {
       //check inventory, if match garbage type, increase point and take away from inventory
       //if recycling, don't take away from inventory and subtract 2 points
+
     }
 
     if (player.getX() + xDir == trashBin.get_X() && player.getY() + yDir == trashBin.get_Y()) {
