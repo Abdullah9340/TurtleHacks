@@ -11,7 +11,7 @@ import java.util.Random;
 public class GameManagement implements KeyListener {
 
   // Fun fact text
-  private String[] funFacts = {"Plastics are the most common element found in the ocean. Plastic is particularly harmful to the environment as it does not break down easily and is often mistaken as food by marine animals.", "Billions of pounds of trash and other pollutants enter the ocean each year", "Recycling one glass bottle saves enough energy to power a normal light bulb for about four hours", "According to a study completed by the University of Georgia, 18 billion pounds of plastic trash winds up in our oceans each year. That’s enough to cover every foot of coastline around the world with five full trash bags of plastic", "Over 100,000 marine animals die yearly due to plastic entanglement and ingestion"};
+  private String[] funFacts = {"Plastics are the most common \nelement found in the ocean.\nPlastic is particularly harmful to the environment\nas it does not break down easily\nand is often mistaken as food by marine animals.", "Billions of pounds of trash\nand other pollutants enter the ocean each year", "Recycling one glass bottle saves enough energy\nto power a normal light bulb for about four hours", "According to a study completed by the University\n of Georgia, 18 billion pounds of plastic trash winds\nup in our oceans each year. That’s enough to cover every\nfoot of coastline around the world with five\nfull trash bags of plastic", "Over 100,000 marine animals die yearly\ndue to plastic entanglement and ingestion"};
   private int factIndex = 0;
 
   // Level Information
@@ -127,7 +127,7 @@ public class GameManagement implements KeyListener {
       if (levelTransisFrame == Assets.endingScreen.length) {
         renderFunFact(g);
         other2++;
-        if (other2 == 50) {
+        if (other2 == 100) {
           isLevelTransis = false;
           currentLevel++;
           if (currentLevel == levelTileMaps.size()) {
@@ -209,7 +209,7 @@ public class GameManagement implements KeyListener {
       g.drawImage(Assets.endingScreen[levelTransisFrame], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null,
           null);
       other2++;
-      if (other2 == 10) {
+      if (other2 == 5) {
         other2 = 0;
         levelTransisFrame++;
       }
@@ -221,7 +221,10 @@ public class GameManagement implements KeyListener {
     g.setColor(Color.white);
     g.drawImage(Assets.funfactbackground, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
     g.setFont(new Font("Serif", Font.BOLD, 35));
-    g.drawString(funFacts[factIndex], 4 * 64, 5 * 64);
+    int y = 3 * 64;
+    for (String line : funFacts[factIndex].split("\n")){
+      g.drawString(line, 3*64, y += 35);
+    }
   }
 
   public void update() {
