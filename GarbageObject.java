@@ -5,15 +5,19 @@ import java.util.Random;
 
 public class GarbageObject {
     private int x_pos, y_pos;
-    private String garbageType;
+    private String garbageType, binType;
     private BufferedImage trashIcon;
     private BufferedImage trashRotatedIcon;
     public static HashMap<Integer, String> typeMap = new HashMap<Integer, String>();
     public static HashMap<String, BufferedImage> iconMap = new HashMap<String, BufferedImage>();
+    public static HashMap<String, String> objToBin = new HashMap<String, String>();
 
     public static void init() {
         typeMap.put(0, "bottle");
         typeMap.put(1, "battery");
+
+        objToBin.put("bottle", "recycling");
+        objToBin.put("battery", "trash");
 
         iconMap.put("bottle", GarbageAssets.bottle);
         iconMap.put("battery", GarbageAssets.battery);
@@ -33,9 +37,9 @@ public class GarbageObject {
         y_pos = rand.nextInt(y_bound);
 
         garbageType = typeMap.get(typeInt);
-
+        binType = objToBin.get(garbageType);
         trashIcon = iconMap.get(garbageType);
-        trashRotatedIcon = iconMap.get(garbageType+"Rotated");
+        trashRotatedIcon = iconMap.get(garbageType + "Rotated");
 
     }
 
@@ -51,16 +55,20 @@ public class GarbageObject {
         return y_pos;
     }
 
+    public String getBinType() {
+        return binType;
+    }
+
     public BufferedImage getIcon() {
         return trashIcon;
     }
-    
+
     public BufferedImage getRotatedIcon() {
-      return trashRotatedIcon;
+        return trashRotatedIcon;
     }
 
     public String getGarbageType() {
-      return garbageType;
+        return garbageType;
     }
 
 }

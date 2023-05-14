@@ -6,13 +6,18 @@ import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
 public class GameManagement implements KeyListener {
+
+  // Fun fact text
+  private String[] funFacts = {"Plastics are the most common \nelement found in the ocean.\nPlastic is particularly harmful to the environment\nas it does not break down easily\nand is often mistaken as food by marine animals.", "Billions of pounds of trash\nand other pollutants enter the ocean each year", "Recycling one glass bottle saves enough energy\nto power a normal light bulb for about four hours", "According to a study completed by the University\n of Georgia, 18 billion pounds of plastic trash winds\nup in our oceans each year. That’s enough to cover every\nfoot of coastline around the world with five\nfull trash bags of plastic", "Over 100,000 marine animals die yearly\ndue to plastic entanglement and ingestion"};
+  private int factIndex = 0;
 
   // Level Information
   private ArrayList<ArrayList<BufferedImage[][]>> levelTileMaps;
   private int currentLevel = 0;
-  private int garbageWavesLeft = 3;
+  private int garbageWavesLeft = 1;
 
   private Player player;
 
@@ -39,6 +44,10 @@ public class GameManagement implements KeyListener {
 
   // Are we in the main menu
   boolean isMenuState = true;
+
+  // Are we transitioning levels
+  boolean isLevelTransis = false;
+  int levelTransisFrame = 0, other2 = 0;
 
   public GameManagement(Player player) {
     levelTileMaps = new ArrayList<>();
@@ -69,7 +78,7 @@ public class GameManagement implements KeyListener {
   }
 
   public void generateGarbage() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1; i++) {
       GarbageObject garbage = new GarbageObject();
       while (!garbageValid(garbage)) {
         garbage = new GarbageObject();
@@ -110,8 +119,23 @@ public class GameManagement implements KeyListener {
     // Draw the level tile map
 
     if (gameWonFrame == Assets.endingScreen.length) {
-      g.drawImage(Assets.endingScreen[gameWonFrame - 1], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
+      g.drawImage(Assets.gamewon, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
       return;
+    }
+
+    if (isLevelTransis) {
+      if (levelTransisFrame == Assets.endingScreen.length) {
+        renderFunFact(g);
+        other2++;
+        if (other2 == 100) {
+          isLevelTransis = false;
+          currentLevel++;
+          if (currentLevel == levelTileMaps.size()) {
+            isGameWon = true;
+          }
+        }
+        return;
+      }
     }
 
     if (isMenuState) {
@@ -132,11 +156,11 @@ public class GameManagement implements KeyListener {
 
     g.setColor(Color.black);
     g.setFont(new Font("Serif", Font.BOLD, 25));
-    g.drawString("Round: " + round_number, 16*64 - 48, 0*64 + 32);
+    g.drawString("Round: " + round_number, 16 * 64 - 48, 0 * 64 + 32);
 
     g.setColor(Color.black);
     g.setFont(new Font("Serif", Font.BOLD, 25));
-    g.drawString("Points: " + total_points, 16*64 - 48, 1*64 + 16);
+    g.drawString("Points: " + total_points, 16 * 64 - 48, 1 * 64 + 16);
 
     for (GarbageObject obj : trashList) {
       obj.render(g);
@@ -162,10 +186,10 @@ public class GameManagement implements KeyListener {
         if (garbageWavesLeft != 0) {
           generateGarbage();
         } else {
-          currentLevel++;
-          if (currentLevel == levelTileMaps.size()) {
-            isGameWon = true;
-          }
+          isLevelTransis = true;
+          Random rand = new Random();
+          this.factIndex = rand.nextInt(5);
+          
         }
       }
     } else {
@@ -181,6 +205,26 @@ public class GameManagement implements KeyListener {
       }
     }
 
+    if (isLevelTransis) {
+      g.drawImage(Assets.endingScreen[levelTransisFrame], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null,
+          null);
+      other2++;
+      if (other2 == 5) {
+        other2 = 0;
+        levelTransisFrame++;
+      }
+    }
+
+  }
+
+  public void renderFunFact(Graphics g) {
+    g.setColor(Color.white);
+    g.drawImage(Assets.funfactbackground, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
+    g.setFont(new Font("Serif", Font.BOLD, 35));
+    int y = 3 * 64;
+    for (String line : funFacts[factIndex].split("\n")){
+      g.drawString(line, 3*64, y += 35);
+    }
   }
 
   public void update() {
@@ -214,7 +258,6 @@ public class GameManagement implements KeyListener {
     if (recycleBin.get_X() == (int) player.getX() && recycleBin.get_Y() == (int) player.getY()) {
       player.updateAfterCollide();
     }
-
 
     if (currentLevel == levelTileMaps.size()) {
       return;
@@ -259,11 +302,65 @@ public class GameManagement implements KeyListener {
           break;
         trashList.remove(obj);
         player.pushGarbage(obj);
+
+        break;
+      }
+    }
+  }
+
+  public void checkForBin() {
+    if (player.getInventory().size() == 0)
+      return;
+
+    char direction = player.getDirection();
+    int xDir = 0;
+    int yDir = 0;
+
+    if (direction == 'w') {
+      xDir = 0;
+      yDir = -1;
+    }
+    if (direction == 's') {
+      xDir = 0;
+      yDir = 1;
+
+    }
+    if (direction == 'd') {
+      xDir = 1;
+      yDir = 0;
+
+    }
+    if (direction == 'a') {
+      xDir = -1;
+      yDir = 0;
+    }
+
+    if (player.getX() + xDir == trashBin.get_X() && player.getY() + yDir == trashBin.get_Y()) {
+      GarbageObject top = player.removeGarbage();
+      if (top.getBinType().equals(trashBin.get_binType())) {
+        total_points++;
+      } else {
+        total_points -= 2;
+      }
+      if (player.getInventory().size() == 0) {
         if (trashList.size() == 0) {
           garbageWavesLeft -= 1;
           isRolling = true;
         }
-        break;
+      }
+    }
+    if (player.getX() + xDir == recycleBin.get_X() && player.getY() + yDir == recycleBin.get_Y()) {
+      GarbageObject top = player.removeGarbage();
+      if (top.getBinType().equals(recycleBin.get_binType())) {
+        total_points++;
+      } else {
+        total_points -= 2;
+      }
+      if (player.getInventory().size() == 0) {
+        if (trashList.size() == 0) {
+          garbageWavesLeft -= 1;
+          isRolling = true;
+        }
       }
     }
   }
@@ -285,6 +382,12 @@ public class GameManagement implements KeyListener {
       isGrabbing = true;
       grabFrame = 0;
     }
+    if (e.getKeyChar() == 'e' && player.stopped && !isGrabbing) {
+      checkForBin();
+      isGrabbing = true;
+      grabFrame = 0;
+    }
+
   }
 
   @Override
