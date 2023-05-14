@@ -27,7 +27,7 @@ public class Assets {
     // Load Images
     menuScreen = ImageLoader.loadImage("Assets/mainmenu.png");
     // gameover = ImageLoader.loadImage("Assets/Gameover.png");
-    // gamewon = ImageLoader.loadImage("Assets/gamewon.png");
+    gamewon = ImageLoader.loadImage("Assets/credits.png");
     endingScreen = new BufferedImage[] { ImageLoader.loadImage("Assets/30.png"), ImageLoader.loadImage("Assets/50.png"),
         ImageLoader.loadImage("Assets/70.png"), ImageLoader.loadImage("Assets/90.png"),
         ImageLoader.loadImage("Assets/100.png") };
