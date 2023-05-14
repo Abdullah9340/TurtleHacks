@@ -12,7 +12,7 @@ public class GameManagement implements KeyListener {
   // Level Information
   private ArrayList<ArrayList<BufferedImage[][]>> levelTileMaps;
   private int currentLevel = 0;
-  private int garbageWavesLeft = 3;
+  private int garbageWavesLeft = 1;
 
   private Player player;
 
@@ -39,6 +39,10 @@ public class GameManagement implements KeyListener {
 
   // Are we in the main menu
   boolean isMenuState = true;
+
+  // Are we transitioning levels
+  boolean isLevelTransis = false;
+  int levelTransisFrame = 0, other2 = 0;
 
   public GameManagement(Player player) {
     levelTileMaps = new ArrayList<>();
@@ -69,7 +73,7 @@ public class GameManagement implements KeyListener {
   }
 
   public void generateGarbage() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1; i++) {
       GarbageObject garbage = new GarbageObject();
       while (!garbageValid(garbage)) {
         garbage = new GarbageObject();
@@ -112,6 +116,21 @@ public class GameManagement implements KeyListener {
     if (gameWonFrame == Assets.endingScreen.length) {
       g.drawImage(Assets.endingScreen[gameWonFrame - 1], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
       return;
+    }
+
+    if (isLevelTransis) {
+      if (levelTransisFrame == Assets.endingScreen.length) {
+        renderFunFact(g);
+        other2++;
+        if (other2 == 30) {
+          isLevelTransis = false;
+          currentLevel++;
+          if (currentLevel == levelTileMaps.size()) {
+            isGameWon = true;
+          }
+        }
+        return;
+      }
     }
 
     if (isMenuState) {
@@ -162,10 +181,7 @@ public class GameManagement implements KeyListener {
         if (garbageWavesLeft != 0) {
           generateGarbage();
         } else {
-          currentLevel++;
-          if (currentLevel == levelTileMaps.size()) {
-            isGameWon = true;
-          }
+          isLevelTransis = true;
         }
       }
     } else {
@@ -181,6 +197,22 @@ public class GameManagement implements KeyListener {
       }
     }
 
+    if (isLevelTransis) {
+      g.drawImage(Assets.endingScreen[levelTransisFrame], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null,
+          null);
+      other2++;
+      if (other2 == 10) {
+        other2 = 0;
+        levelTransisFrame++;
+      }
+    }
+
+  }
+
+  public void renderFunFact(Graphics g) {
+    g.drawImage(Assets.endingScreen[levelTransisFrame - 1], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
+    g.setFont(new Font("Serif", Font.BOLD, 35));
+    g.drawString("FUN FACT: DONT BE DUMB", 4 * 64, 5 * 64);
   }
 
   public void update() {
