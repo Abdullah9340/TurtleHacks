@@ -222,6 +222,7 @@ public class GameManagement implements KeyListener {
     g.drawImage(Assets.funfactbackground, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
     g.setFont(new Font("Serif", Font.BOLD, 35));
     int y = 3 * 64;
+    g.drawString("Did you know?", 7*64, 2*64);
     for (String line : funFacts[factIndex].split("\n")){
       g.drawString(line, 3*64, y += 35);
     }
