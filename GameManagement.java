@@ -114,7 +114,7 @@ public class GameManagement implements KeyListener {
     // Draw the level tile map
 
     if (gameWonFrame == Assets.endingScreen.length) {
-      g.drawImage(Assets.endingScreen[gameWonFrame - 1], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
+      g.drawImage(Assets.gamewon, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
       return;
     }
 
