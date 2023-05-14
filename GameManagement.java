@@ -6,8 +6,13 @@ import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
 public class GameManagement implements KeyListener {
+
+  // Fun fact text
+  private String[] funFacts = {"Plastics are the most common element found in the ocean. Plastic is particularly harmful to the environment as it does not break down easily and is often mistaken as food by marine animals.", "Billions of pounds of trash and other pollutants enter the ocean each year", "Recycling one glass bottle saves enough energy to power a normal light bulb for about four hours", "According to a study completed by the University of Georgia, 18 billion pounds of plastic trash winds up in our oceans each year. That’s enough to cover every foot of coastline around the world with five full trash bags of plastic", "Over 100,000 marine animals die yearly due to plastic entanglement and ingestion"};
+  private int factIndex = 0;
 
   // Level Information
   private ArrayList<ArrayList<BufferedImage[][]>> levelTileMaps;
@@ -122,7 +127,7 @@ public class GameManagement implements KeyListener {
       if (levelTransisFrame == Assets.endingScreen.length) {
         renderFunFact(g);
         other2++;
-        if (other2 == 30) {
+        if (other2 == 50) {
           isLevelTransis = false;
           currentLevel++;
           if (currentLevel == levelTileMaps.size()) {
@@ -182,6 +187,9 @@ public class GameManagement implements KeyListener {
           generateGarbage();
         } else {
           isLevelTransis = true;
+          Random rand = new Random();
+          this.factIndex = rand.nextInt(5);
+          
         }
       }
     } else {
@@ -210,9 +218,10 @@ public class GameManagement implements KeyListener {
   }
 
   public void renderFunFact(Graphics g) {
+    g.setColor(Color.white);
     g.drawImage(Assets.endingScreen[levelTransisFrame - 1], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
     g.setFont(new Font("Serif", Font.BOLD, 35));
-    g.drawString("FUN FACT: DONT BE DUMB", 4 * 64, 5 * 64);
+    g.drawString(funFacts[factIndex], 4 * 64, 5 * 64);
   }
 
   public void update() {
