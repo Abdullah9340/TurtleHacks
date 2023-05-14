@@ -22,7 +22,7 @@ public class GameManagement implements KeyListener {
   // Level Information
   private ArrayList<ArrayList<BufferedImage[][]>> levelTileMaps;
   private int currentLevel = 0;
-  private int garbageWavesLeft = 1;
+  private int garbageWavesLeft = 2;
 
   private Player player;
 
@@ -84,7 +84,7 @@ public class GameManagement implements KeyListener {
     allowedObjects.add(BackgroundAssets.transparent);
     allowedObjects.add(BackgroundAssets.flowers);
     allowedObjects.add(BackgroundAssets.grassBottomHoriz);
-    allowedObjects.add(BackgroundAssets.grassBottomRight);
+    allowedObjects.add(BackgroundAssets.grassBottomLeft);
     allowedObjects.add(BackgroundAssets.grassBottomRight);
     allowedObjects.add(BackgroundAssets.grassLeftCorner);
     allowedObjects.add(BackgroundAssets.grassLeftVert);
@@ -107,7 +107,7 @@ public class GameManagement implements KeyListener {
   }
 
   public void generateGarbage() {
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 5; i++) {
       GarbageObject garbage = new GarbageObject();
       while (!garbageValid(garbage)) {
         garbage = new GarbageObject();
@@ -162,14 +162,17 @@ public class GameManagement implements KeyListener {
     }
 
     if (isLevelTransis) {
-      if (levelTransisFrame == Assets.endingScreen.length) {
+      if (levelTransisFrame >= Assets.endingScreen.length) {
         renderFunFact(g);
         other2++;
-        if (other2 == 100) {
+        if (other2 >= 100) {
           isLevelTransis = false;
           currentLevel++;
-          if (currentLevel == levelTileMaps.size()) {
+          player.setX(0);
+          player.setY(8);
+          if (currentLevel >= levelTileMaps.size()) {
             isGameWon = true;
+            gameWonFrame = Assets.endingScreen.length;
           } else {
             generateGarbage();
             round_number++;
@@ -227,9 +230,10 @@ public class GameManagement implements KeyListener {
         if (garbageWavesLeft != 0) {
           generateGarbage();
         } else {
+          garbageWavesLeft = 2;
           isLevelTransis = true;
+          other2 = 0;
           this.factIndex = rand.nextInt(5);
-
         }
       }
     } else {
@@ -245,7 +249,7 @@ public class GameManagement implements KeyListener {
       }
     }
 
-    if (isLevelTransis) {
+    if (isLevelTransis && levelTransisFrame < Assets.endingScreen.length) {
       g.drawImage(Assets.endingScreen[levelTransisFrame], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null,
           null);
       other2++;
@@ -260,7 +264,7 @@ public class GameManagement implements KeyListener {
   public void renderFunFact(Graphics g) {
     g.setColor(Color.white);
     g.drawImage(Assets.funfactbackground, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
-    g.setFont(new Font("Serif", Font.BOLD, 35));
+    g.setFont(new Font("Serif", Font.PLAIN, 35));
     int y = 3 * 64;
     g.drawString("Did you know?", 7*64, 2*64);
     for (String line : funFacts[factIndex].split("\n")){
@@ -345,6 +349,7 @@ public class GameManagement implements KeyListener {
       if (player.getX() + xDir == obj.getX() && player.getY() + yDir == obj.getY()) {
         if (player.isInventoryFull())
           break;
+        Music.pickupNoise();
         trashList.remove(obj);
         player.pushGarbage(obj);
 
@@ -389,6 +394,7 @@ public class GameManagement implements KeyListener {
       }
       if (player.getInventory().size() == 0) {
         if (trashList.size() == 0) {
+          Music.scoreNoise();
           garbageWavesLeft -= 1;
           isRolling = true;
         }
@@ -403,6 +409,7 @@ public class GameManagement implements KeyListener {
       }
       if (player.getInventory().size() == 0) {
         if (trashList.size() == 0) {
+          Music.scoreNoise();
           garbageWavesLeft -= 1;
           isRolling = true;
         }
@@ -422,10 +429,6 @@ public class GameManagement implements KeyListener {
     if (isMenuState) {
       isMenuState = false;
       return;
-    }
-    if (e.getKeyChar() == 'q' && player.stopped && !isGrabbing) {
-      isGrabbing = true;
-      grabFrame = 0;
     }
     if (e.getKeyChar() == 'e' && player.stopped && !isGrabbing) {
       checkForBin();

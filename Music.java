@@ -23,4 +23,28 @@ public class Music {
     }
   }
 
+  public static void pickupNoise() {
+    try {
+      File file = new File("Assets/PickupSound.wav"); // Read file
+      Clip clip = AudioSystem.getClip();
+      AudioInputStream inputStream = AudioSystem.getAudioInputStream(file); // Create an audio stream for the file
+      clip.open(inputStream);
+      clip.start(); // Start the clip
+    } catch (Exception e) {
+      System.err.println("Could not find music"); // Incase file can't be loaded
+    }
+  }
+
+  public static void scoreNoise() {
+    try {
+      File file = new File("Assets/PointsSound.wav"); // Read file
+      Clip clip = AudioSystem.getClip();
+      AudioInputStream inputStream = AudioSystem.getAudioInputStream(file); // Create an audio stream for the file
+      clip.open(inputStream);
+      clip.start(); // Start the clip
+    } catch (Exception e) {
+      System.err.println("Could not find music"); // Incase file can't be loaded
+    }
+  }
+
 }
