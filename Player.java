@@ -124,7 +124,8 @@ public class Player implements KeyListener {
 
   public void renderHotbar(Graphics g) {
     g.setColor(Color.darkGray);
-    for (int i = 0; i < inventoryLimit; i++) {
+    drawThickRect(g, 0, 0, 64, 64, 5);
+    for (int i = 1; i < inventoryLimit; i++) {
       drawThickRect(g, i * 64, 0, 64, 64, 3);
     }
     for (int i = 0; i < inventory.size(); i++) {
