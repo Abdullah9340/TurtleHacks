@@ -21,6 +21,7 @@ public class Assets {
     // SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("Assets/rpg.png"));
     SpriteSheet players = new SpriteSheet(ImageLoader.loadImage("Assets/playersprite.png"));
     SpriteSheet background = new SpriteSheet(ImageLoader.loadImage("Assets/beach.png"));
+    SpriteSheet background2 = new SpriteSheet(ImageLoader.loadImage("Assets/outdoors.png"));
     // SpriteSheet darksoilder = new
     // SpriteSheet(ImageLoader.loadImage("Assets/darksoilder.png"));
 
@@ -35,6 +36,7 @@ public class Assets {
         ImageLoader.loadImage("Assets/100.png") };
     // Load Background
     BackgroundAssets.init(background);
+    BackgroundAssets.init2(background2);
     // Load player sprites
     PlayerAssets.init(players);
   }

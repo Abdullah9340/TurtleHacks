@@ -11,7 +11,12 @@ import java.util.Random;
 public class GameManagement implements KeyListener {
 
   // Fun fact text
-  private String[] funFacts = {"Plastics are the most common \nelement found in the ocean.\nPlastic is particularly harmful to the environment\nas it does not break down easily\nand is often mistaken as food by marine animals.", "Billions of pounds of trash\nand other pollutants enter the ocean each year", "Recycling one glass bottle saves enough energy\nto power a normal light bulb for about four hours", "According to a study completed by the University\n of Georgia, 18 billion pounds of plastic trash winds\nup in our oceans each year. That’s enough to cover every\nfoot of coastline around the world with five\nfull trash bags of plastic", "Over 100,000 marine animals die yearly\ndue to plastic entanglement and ingestion"};
+  private String[] funFacts = {
+      "Plastics are the most common \nelement found in the ocean.\nPlastic is particularly harmful to the environment\nas it does not break down easily\nand is often mistaken as food by marine animals.",
+      "Billions of pounds of trash\nand other pollutants enter the ocean each year",
+      "Recycling one glass bottle saves enough energy\nto power a normal light bulb for about four hours",
+      "According to a study completed by the University\n of Georgia, 18 billion pounds of plastic trash winds\nup in our oceans each year. That’s enough to cover every\nfoot of coastline around the world with five\nfull trash bags of plastic",
+      "Over 100,000 marine animals die yearly\ndue to plastic entanglement and ingestion" };
   private int factIndex = 0;
 
   // Level Information
@@ -52,6 +57,7 @@ public class GameManagement implements KeyListener {
   public GameManagement(Player player) {
     levelTileMaps = new ArrayList<>();
     levelTileMaps.add(BackgroundAssets.firstLevelLayers);
+    levelTileMaps.add(BackgroundAssets.secondLevelLayers);
     this.player = player;
 
     GarbageObject.init();
@@ -73,6 +79,28 @@ public class GameManagement implements KeyListener {
     allowedObjects.add(BackgroundAssets.sandTileShadowed);
     allowedObjects.add(BackgroundAssets.sandTileShadowed);
     allowedObjects.add(BackgroundAssets.sandTileStarFish);
+
+    allowedObjects.add(BackgroundAssets.transparent);
+    allowedObjects.add(BackgroundAssets.flowers);
+    allowedObjects.add(BackgroundAssets.grassBottomHoriz);
+    allowedObjects.add(BackgroundAssets.grassBottomRight);
+    allowedObjects.add(BackgroundAssets.grassBottomRight);
+    allowedObjects.add(BackgroundAssets.grassLeftCorner);
+    allowedObjects.add(BackgroundAssets.grassLeftVert);
+    allowedObjects.add(BackgroundAssets.grassRightCorner);
+    allowedObjects.add(BackgroundAssets.grassRightVert);
+    allowedObjects.add(BackgroundAssets.grassTopHoriz);
+
+    allowedObjects.add(BackgroundAssets.shoreBottomLeft);
+    allowedObjects.add(BackgroundAssets.shoreBottomRight);
+    allowedObjects.add(BackgroundAssets.shoreLeftCorner);
+    allowedObjects.add(BackgroundAssets.shoreLeftVert);
+    allowedObjects.add(BackgroundAssets.shoreRightCorner);
+    allowedObjects.add(BackgroundAssets.shoreRightVert);
+    allowedObjects.add(BackgroundAssets.shoreTopHoriz);
+    allowedObjects.add(BackgroundAssets.ShoreBottomHoriz);
+
+    allowedObjects.add(BackgroundAssets.grassBasic);
 
     generateGarbage();
   }
@@ -189,7 +217,7 @@ public class GameManagement implements KeyListener {
           isLevelTransis = true;
           Random rand = new Random();
           this.factIndex = rand.nextInt(5);
-          
+
         }
       }
     } else {
