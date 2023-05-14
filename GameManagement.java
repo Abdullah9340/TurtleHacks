@@ -58,6 +58,24 @@ public class GameManagement implements KeyListener {
     allowedObjects.add(BackgroundAssets.sandTileStarFish);
 
     allowedObjects.add(BackgroundAssets.transparent);
+    allowedObjects.add(BackgroundAssets.flowers);
+    allowedObjects.add(BackgroundAssets.grassBottomHoriz);
+    allowedObjects.add(BackgroundAssets.grassBottomRight);
+    allowedObjects.add(BackgroundAssets.grassBottomRight);
+    allowedObjects.add(BackgroundAssets.grassLeftCorner);
+    allowedObjects.add(BackgroundAssets.grassLeftVert);
+    allowedObjects.add(BackgroundAssets.grassRightCorner);
+    allowedObjects.add(BackgroundAssets.grassRightVert);
+    allowedObjects.add(BackgroundAssets.grassTopHoriz);
+
+    allowedObjects.add(BackgroundAssets.shoreBottomLeft);
+    allowedObjects.add(BackgroundAssets.shoreBottomRight);
+    allowedObjects.add(BackgroundAssets.shoreLeftCorner);
+    allowedObjects.add(BackgroundAssets.shoreLeftVert);
+    allowedObjects.add(BackgroundAssets.shoreRightCorner);
+    allowedObjects.add(BackgroundAssets.shoreRightVert);
+    allowedObjects.add(BackgroundAssets.shoreTopHoriz);
+    allowedObjects.add(BackgroundAssets.ShoreBottomHoriz);
 
     allowedObjects.add(BackgroundAssets.grassBasic);
     generateGarbage();
@@ -111,7 +129,7 @@ public class GameManagement implements KeyListener {
       for (int i = 0; i < TurtleHacks.HEIGHT / 64; i++) {
         for (int j = 0; j < TurtleHacks.WIDTH / 64; j++) {
           g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
-          //g.drawRect(j * 64, i * 64, 64, 64);
+          // g.drawRect(j * 64, i * 64, 64, 64);
         }
       }
     }
