@@ -53,6 +53,7 @@ public class GameManagement implements KeyListener {
   // Are we transitioning levels
   boolean isLevelTransis = false;
   int levelTransisFrame = 0, other2 = 0;
+  Random rand = new Random();
 
   public GameManagement(Player player) {
     levelTileMaps = new ArrayList<>();
@@ -106,7 +107,7 @@ public class GameManagement implements KeyListener {
   }
 
   public void generateGarbage() {
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 15; i++) {
       GarbageObject garbage = new GarbageObject();
       while (!garbageValid(garbage)) {
         garbage = new GarbageObject();
@@ -117,6 +118,9 @@ public class GameManagement implements KeyListener {
 
   public boolean garbageValid(GarbageObject garbage) {
     if (garbage.getX() == (int) player.getX() && garbage.getY() == (int) player.getY()) {
+      return false;
+    }
+    if (garbage.getY() == 0 && (garbage.getX() == 0 || garbage.getX() == 1 || garbage.getX() == 2)) {
       return false;
     }
     for (GarbageObject obj : trashList) {
@@ -133,11 +137,17 @@ public class GameManagement implements KeyListener {
       return false;
     }
 
+    // Player collision with map objects
+    int checkIndex = levelTileMaps.get(currentLevel).size() - 1;
+    while (levelTileMaps.get(currentLevel).get(checkIndex)[(int) garbage.getY()][(int) garbage.getX()] == BackgroundAssets.transparent || levelTileMaps.get(currentLevel).get(checkIndex)[(int) garbage.getY()][(int) garbage.getX()] == BackgroundAssets.transparentTile) {
+      checkIndex -= 1;
+    }
     if (!allowedObjects
         .contains(
             levelTileMaps.get(currentLevel)
-                .get(levelTileMaps.get(currentLevel).size() - 1)[garbage.getY()][garbage.getX()])) {
+                .get(checkIndex)[(int) garbage.getY()][(int) garbage.getX()])) {
       return false;
+
     }
 
     return true;
@@ -160,6 +170,9 @@ public class GameManagement implements KeyListener {
           currentLevel++;
           if (currentLevel == levelTileMaps.size()) {
             isGameWon = true;
+          } else {
+            generateGarbage();
+            round_number++;
           }
         }
         return;
@@ -215,7 +228,6 @@ public class GameManagement implements KeyListener {
           generateGarbage();
         } else {
           isLevelTransis = true;
-          Random rand = new Random();
           this.factIndex = rand.nextInt(5);
 
         }
@@ -292,10 +304,14 @@ public class GameManagement implements KeyListener {
       return;
     }
     // Player collision with map objects
+    int checkIndex = levelTileMaps.get(currentLevel).size() - 1;
+    while (levelTileMaps.get(currentLevel).get(checkIndex)[(int) player.getY()][(int) player.getX()] == BackgroundAssets.transparent || levelTileMaps.get(currentLevel).get(checkIndex)[(int) player.getY()][(int) player.getX()] == BackgroundAssets.transparentTile) {
+      checkIndex -= 1;
+    }
     if (!allowedObjects
         .contains(
             levelTileMaps.get(currentLevel)
-                .get(levelTileMaps.get(currentLevel).size() - 1)[(int) player.getY()][(int) player.getX()])) {
+                .get(checkIndex)[(int) player.getY()][(int) player.getX()])) {
       player.updateAfterCollide();
 
     }
