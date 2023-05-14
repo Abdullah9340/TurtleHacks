@@ -57,6 +57,9 @@ public class GameManagement implements KeyListener {
     allowedObjects.add(BackgroundAssets.sandTileShadowed);
     allowedObjects.add(BackgroundAssets.sandTileStarFish);
 
+    allowedObjects.add(BackgroundAssets.transparent);
+
+    allowedObjects.add(BackgroundAssets.grassBasic);
     generateGarbage();
   }
 
@@ -79,7 +82,6 @@ public class GameManagement implements KeyListener {
         return false;
       }
     }
-    System.out.println(currentLevel + " " + levelTileMaps.get(currentLevel).size());
     if (!allowedObjects
         .contains(
             levelTileMaps.get(currentLevel)
@@ -109,7 +111,7 @@ public class GameManagement implements KeyListener {
       for (int i = 0; i < TurtleHacks.HEIGHT / 64; i++) {
         for (int j = 0; j < TurtleHacks.WIDTH / 64; j++) {
           g.drawImage(layer[i][j], j * 64, i * 64, 64, 64, null, null);
-          g.drawRect(j * 64, i * 64, 64, 64);
+          //g.drawRect(j * 64, i * 64, 64, 64);
         }
       }
     }
