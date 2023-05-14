@@ -132,11 +132,11 @@ public class GameManagement implements KeyListener {
 
     g.setColor(Color.black);
     g.setFont(new Font("Serif", Font.BOLD, 25));
-    g.drawString("Round: " + round_number, 16*64 - 48, 0*64 + 32);
+    g.drawString("Round: " + round_number, 16 * 64 - 48, 0 * 64 + 32);
 
     g.setColor(Color.black);
     g.setFont(new Font("Serif", Font.BOLD, 25));
-    g.drawString("Points: " + total_points, 16*64 - 48, 1*64 + 16);
+    g.drawString("Points: " + total_points, 16 * 64 - 48, 1 * 64 + 16);
 
     for (GarbageObject obj : trashList) {
       obj.render(g);
@@ -215,7 +215,6 @@ public class GameManagement implements KeyListener {
       player.updateAfterCollide();
     }
 
-
     if (currentLevel == levelTileMaps.size()) {
       return;
     }
@@ -259,11 +258,65 @@ public class GameManagement implements KeyListener {
           break;
         trashList.remove(obj);
         player.pushGarbage(obj);
+
+        break;
+      }
+    }
+  }
+
+  public void checkForBin() {
+    if (player.getInventory().size() == 0)
+      return;
+
+    char direction = player.getDirection();
+    int xDir = 0;
+    int yDir = 0;
+
+    if (direction == 'w') {
+      xDir = 0;
+      yDir = -1;
+    }
+    if (direction == 's') {
+      xDir = 0;
+      yDir = 1;
+
+    }
+    if (direction == 'd') {
+      xDir = 1;
+      yDir = 0;
+
+    }
+    if (direction == 'a') {
+      xDir = -1;
+      yDir = 0;
+    }
+
+    if (player.getX() + xDir == trashBin.get_X() && player.getY() + yDir == trashBin.get_Y()) {
+      GarbageObject top = player.removeGarbage();
+      if (top.getBinType().equals(trashBin.get_binType())) {
+        total_points++;
+      } else {
+        total_points -= 2;
+      }
+      if (player.getInventory().size() == 0) {
         if (trashList.size() == 0) {
           garbageWavesLeft -= 1;
           isRolling = true;
         }
-        break;
+      }
+    }
+    if (player.getX() + xDir == recycleBin.get_X() && player.getY() + yDir == recycleBin.get_Y()) {
+      GarbageObject top = player.removeGarbage();
+      if (top.getBinType().equals(recycleBin.get_binType())) {
+        total_points++;
+      } else {
+        total_points -= 2;
+      }
+      if (player.getInventory().size() == 0) {
+        if (trashList.size() == 0) {
+          garbageWavesLeft -= 1;
+          isRolling = true;
+        }
       }
     }
   }
@@ -285,6 +338,12 @@ public class GameManagement implements KeyListener {
       isGrabbing = true;
       grabFrame = 0;
     }
+    if (e.getKeyChar() == 'e' && player.stopped && !isGrabbing) {
+      checkForBin();
+      isGrabbing = true;
+      grabFrame = 0;
+    }
+
   }
 
   @Override
