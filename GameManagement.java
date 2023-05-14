@@ -219,7 +219,7 @@ public class GameManagement implements KeyListener {
 
   public void renderFunFact(Graphics g) {
     g.setColor(Color.white);
-    g.drawImage(Assets.endingScreen[levelTransisFrame - 1], 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
+    g.drawImage(Assets.funfactbackground, 0, 0, TurtleHacks.WIDTH, TurtleHacks.HEIGHT, null, null);
     g.setFont(new Font("Serif", Font.BOLD, 35));
     g.drawString(funFacts[factIndex], 4 * 64, 5 * 64);
   }
